@@ -1,6 +1,8 @@
 package com.apps.krishnakandula.diceroller
 
 import com.apps.krishnakandula.common.Scopes
+import com.apps.krishnakandula.diceroller.roller.DiceRoller
+import com.apps.krishnakandula.diceroller.roller.DiceRollerModule
 import dagger.Component
 
 @Scopes.Application
