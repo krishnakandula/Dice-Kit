@@ -1,0 +1,6 @@
+package com.apps.krishnakandula.diceroller.template
+
+import com.apps.krishnakandula.diceroller.Dice
+
+data class Template(val name: String,
+                    val rolls: List<Dice>)

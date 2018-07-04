@@ -1,4 +1,4 @@
-package com.apps.krishnakandula.diceroller
+package com.apps.krishnakandula.diceroller.roller
 
 import com.apps.krishnakandula.common.Scopes
 import dagger.Module
