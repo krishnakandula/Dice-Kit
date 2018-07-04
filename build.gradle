@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.2.51'
     repositories {
         google()
         jcenter()
@@ -32,10 +32,22 @@ ext {
     daggerVersion = '2.16'
     junitVersion = '4.12'
     rxRelayVersion = '2.0.0'
+    archLifecycleVersion = '1.1.1'
+    constraintLayoutVersion = '1.1.2'
+    supportLibVersion = '27.1.1'
 
     junit = "junit:junit:$junitVersion"
     dagger = "com.google.dagger:dagger:$daggerVersion"
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
     daggerKapt = "com.google.dagger:dagger-android-processor:$daggerVersion"
     rxRelay = "com.jakewharton.rxrelay2:rxrelay:$rxRelayVersion"
+    rxKotlin = "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
+    rxAndroid = "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    viewModel = "android.arch.lifecycle:viewmodel:$archLifecycleVersion"
+    viewModelAnnotationProcessor = "android.arch.lifecycle:compiler:$archLifecycleVersion"
+    constraintLayout = "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    supportLib = "com.android.support"
+    recyclerViewSupportLib = "$supportLib:recyclerview-v7:$supportLibVersion"
+    designSupportLib = "$supportLib:design:$supportLibVersion"
+    cardViewSupportLib = "$supportLib:cardview-v7:$supportLibVersion"
 }
