@@ -6,112 +6,132 @@
     android:layout_height="wrap_content">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/dice_pad_d6_btn"
+        style="@style/DicePadNumberBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:text="D6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button8" />
+        app:layout_constraintTop_toBottomOf="@+id/dice_pad_d2_btn" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/dice_pad_d10_btn"
+        style="@style/DicePadNumberBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:text="D10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/dice_pad_d6_btn" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/dice_pad_d20_btn"
+        style="@style/DicePadNumberBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/button6"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        android:text="D20"
+        app:layout_constraintEnd_toStartOf="@+id/dice_pad_eq_btn"
+        app:layout_constraintStart_toEndOf="@+id/dice_pad_d10_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dice_pad_d8_btn" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/dice_pad_d8_btn"
+        style="@style/DicePadNumberBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button9" />
+        android:text="D8"
+        app:layout_constraintEnd_toStartOf="@+id/dice_pad_delete_btn"
+        app:layout_constraintStart_toEndOf="@+id/dice_pad_d6_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dice_pad_d4_btn" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/dice_pad_delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:text="Delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button10" />
+        app:layout_constraintTop_toBottomOf="@+id/dice_pad_save_btn" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/dice_pad_eq_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:text="="
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5" />
+        app:layout_constraintTop_toBottomOf="@+id/dice_pad_delete_btn" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/dice_pad_d2_btn"
+        style="@style/DicePadNumberBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:text="D2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/dice_pad_d4_btn"
+        style="@style/DicePadNumberBtn"
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/button10"
-        app:layout_constraintStart_toEndOf="@+id/button8"
+        android:text="D4"
+        app:layout_constraintEnd_toStartOf="@+id/dice_pad_save_btn"
+        app:layout_constraintStart_toEndOf="@+id/dice_pad_d2_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button10"
+    <ImageButton
+        android:id="@+id/dice_pad_save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_save_white_24dp"
+        android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:text="No Templates"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintTop_toBottomOf="@+id/dice_pad_d20_btn" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dice_pad_template_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dice_pad_d20_btn"
         tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/template_item"
         tools:orientation="horizontal" />
