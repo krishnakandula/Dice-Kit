@@ -10,9 +10,6 @@
 
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
-            <stroke
-                android:color="@color/teal"
-                android:width="2dp"/>
             <gradient
                 android:angle="90"
                 android:endColor="@android:color/transparent"
