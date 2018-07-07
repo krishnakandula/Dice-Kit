@@ -17,5 +17,5 @@ class DMToolkitApp : Application(), DiceRollerComponentProvider {
                 .build()
     }
 
-    override fun provideDiceRollerComponent(): DiceRollerComponent = diceRollerComponent
+    override fun diceRollerComponent(): DiceRollerComponent = diceRollerComponent
 }
