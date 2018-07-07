@@ -50,4 +50,5 @@ ext {
     recyclerViewSupportLib = "$supportLib:recyclerview-v7:$supportLibVersion"
     designSupportLib = "$supportLib:design:$supportLibVersion"
     cardViewSupportLib = "$supportLib:cardview-v7:$supportLibVersion"
+    ktReflections = "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }

@@ -21,7 +21,7 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
 
     @Inject lateinit var presenter: BasePresenter
     @Inject lateinit var viewModel: DiceRollerViewModel
-    @Inject lateinit var backpressureStrategy: BackpressureStrategy
+    @Inject lateinit var backPressureStrategy: BackpressureStrategy
     private var disposable = CompositeDisposable()
 
     private val diceBtnClickRelay = PublishRelay.create<Dice>()
@@ -61,10 +61,10 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
     override fun setupListeners() {
     }
 
-    override fun onClickDiceBtn(): Flowable<Dice> = diceBtnClickRelay.toFlowable(backpressureStrategy)
+    override fun onClickDiceBtn(): Flowable<Dice> = diceBtnClickRelay.toFlowable(backPressureStrategy)
 
-    override fun onClickEqualsBtn(): Flowable<List<Dice>> = equalsBtnClickRelay.toFlowable(backpressureStrategy)
+    override fun onClickEqualsBtn(): Flowable<List<Dice>> = equalsBtnClickRelay.toFlowable(backPressureStrategy)
 
-    override fun onClickSaveBtn(): Flowable<List<Dice>> = saveBtnClickRelay.toFlowable(backpressureStrategy)
+    override fun onClickSaveBtn(): Flowable<List<Dice>> = saveBtnClickRelay.toFlowable(backPressureStrategy)
 
 }

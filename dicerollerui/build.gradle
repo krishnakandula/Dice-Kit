@@ -51,6 +51,8 @@ dependencies {
     implementation "$recyclerViewSupportLib"
     implementation "$designSupportLib"
     implementation "$cardViewSupportLib"
+    // Kt Reflections
+    implementation "$ktReflections"
 }
 
 apply plugin: 'kotlin-android'
