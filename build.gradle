@@ -43,7 +43,7 @@ ext {
     rxRelay = "com.jakewharton.rxrelay2:rxrelay:$rxRelayVersion"
     rxKotlin = "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
     rxAndroid = "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    viewModel = "android.arch.lifecycle:viewmodel:$archLifecycleVersion"
+    viewModel = "android.arch.lifecycle:extensions:$archLifecycleVersion"
     viewModelAnnotationProcessor = "android.arch.lifecycle:compiler:$archLifecycleVersion"
     constraintLayout = "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
     supportLib = "com.android.support"
