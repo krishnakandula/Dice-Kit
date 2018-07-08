@@ -1,13 +1,21 @@
 package com.apps.krishnakandula.dicerollerui.view
 
 import android.util.Log
+import com.apps.krishnakandula.common.Scopes
+import com.apps.krishnakandula.common.util.Result
 import com.apps.krishnakandula.common.view.BasePresenter
+import com.apps.krishnakandula.diceroller.roller.DiceRoller
+import com.apps.krishnakandula.dicerollerui.R
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
+import org.reactivestreams.Publisher
 import javax.inject.Inject
 
+@Scopes.Feature
 class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerView.Actions,
-                                              private val viewModel: DiceRollerViewModel) : BasePresenter {
+                                              private val viewModel: DiceRollerViewModel,
+                                              private val diceRoller: DiceRoller) : BasePresenter {
 
     companion object {
         private val LOG_TAG = DiceRollerPresenter::class.simpleName
@@ -18,18 +26,43 @@ class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerVie
         disposable.add(actions.onClickDiceBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Dice Button pressed") }
-                .subscribeBy(onNext = { }))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = { die ->
+                    val dice = viewModel.diceInEquation.value.toMutableList()
+                    dice.add(die)
+                    viewModel.diceInEquation.accept(dice)
+                }))
 
         disposable.add(actions.onClickEqualsBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Equals Button pressed") }
-                .subscribeBy(onNext = { }))
+                .flatMap { diceRoller.roll(it).toFlowable() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = {
+                    when(it) {
+                        is Result.Error -> {
+                            Log.e(LOG_TAG, "Unable to retrieve result", it.error)
+                        }
+                        is Result.Success -> {
+                            // Update previous rolls to include calculated result
+                            diceRoller.addToHistory(it.data).subscribe()
+                            // Clear view model list of dice in equation
+                            viewModel.diceInEquation.accept(emptyList())
+                        }
+                    }
+                }))
 
         disposable.add(actions.onClickSaveBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Save Button pressed") }
                 .subscribeBy(onNext = { }))
 
+        disposable.add(actions.onClickDeleteBtn()
+                .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
+                .doOnNext { Log.v(LOG_TAG, "Delete Button pressed") }
+                .subscribeBy(onNext = { }))
+
         return disposable
     }
+
 }

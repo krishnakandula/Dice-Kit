@@ -50,6 +50,7 @@
         app:layout_constraintVertical_weight=".1">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_dice_roller_equation_edit_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
