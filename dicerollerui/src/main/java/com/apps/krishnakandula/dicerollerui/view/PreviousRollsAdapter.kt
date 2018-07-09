@@ -1,6 +1,7 @@
 package com.apps.krishnakandula.dicerollerui.view
 
 import android.content.Context
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -20,7 +21,9 @@ class PreviousRollsAdapter @Inject constructor(private val context: Context)
     private val previousRolls = BehaviorRelay.createDefault<List<DiceRollResult>>(emptyList())
 
     fun setData(rolls: List<DiceRollResult>) {
+        val diffResult = DiffUtil.calculateDiff(PreviousRollsDiffCallback(previousRolls.value, rolls))
         this.previousRolls.accept(rolls)
+        diffResult.dispatchUpdatesTo(this)
         notifyDataSetChanged()
     }
 
