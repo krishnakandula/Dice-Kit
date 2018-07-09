@@ -7,20 +7,24 @@
     tools:context=".view.DiceRollerFragment"
     tools:layout_editor_absoluteY="81dp">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_dice_roller_history_recycler_view"
+    <android.support.v7.widget.CardView
+        android:id="@+id/fragment_dice_roller_history_card_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:elevation="4dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toTopOf="@+id/fragment_dice_roller_equation_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
-        app:layout_constraintVertical_weight=".4" />
+        app:layout_constraintVertical_weight=".4">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_dice_roller_history_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"/>
+    </android.support.v7.widget.CardView>
 
     <include
         android:id="@+id/fragment_dice_roller_dice_pad"
@@ -38,21 +42,20 @@
         android:id="@+id/fragment_dice_roller_equation_edit"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:elevation="8dp"
         android:minHeight="50dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="10dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/light_gray"
         app:layout_constraintBottom_toTopOf="@+id/fragment_dice_roller_dice_pad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_dice_roller_history_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_dice_roller_history_card_view"
         app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintVertical_weight=".1">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_dice_roller_equation_edit_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listitem="@layout/dice_item"
             tools:orientation="horizontal" />

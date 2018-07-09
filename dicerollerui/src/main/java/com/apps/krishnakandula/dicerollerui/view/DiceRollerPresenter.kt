@@ -36,6 +36,7 @@ class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerVie
         disposable.add(actions.onClickEqualsBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Equals Button pressed") }
+                .filter { it.isNotEmpty() }
                 .flatMap { diceRoller.roll(it).toFlowable() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(onNext = {
@@ -55,12 +56,19 @@ class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerVie
         disposable.add(actions.onClickSaveBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Save Button pressed") }
+                .filter { it.isNotEmpty() }
                 .subscribeBy(onNext = { }))
 
         disposable.add(actions.onClickDeleteBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Delete Button pressed") }
-                .subscribeBy(onNext = { }))
+                .filter { viewModel.diceInEquation.value.isNotEmpty() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = {
+                    val dice = viewModel.diceInEquation.value.toMutableList()
+                    dice.removeAt(dice.lastIndex)
+                    viewModel.diceInEquation.accept(dice)
+                }))
 
         return disposable
     }

@@ -30,6 +30,7 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
     @Inject lateinit var viewModel: DiceRollerViewModel
     @Inject lateinit var backPressureStrategy: BackpressureStrategy
     @Inject lateinit var diceEquationAdapter: DiceEquationAdapter
+    @Inject lateinit var previousRollsAdapter: PreviousRollsAdapter
     private var disposable = CompositeDisposable()
 
     private val diceBtnClickRelay = PublishRelay.create<Dice>()
@@ -60,6 +61,10 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
         fragment_dice_roller_equation_edit_recycler_view.adapter = diceEquationAdapter
         fragment_dice_roller_equation_edit_recycler_view.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        fragment_dice_roller_history_recycler_view.adapter = previousRollsAdapter
+        fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL,
+                false)
         setupActions()
         setupListeners()
         disposable.addAll(presenter.bindActions(), viewModel.bindSources())
@@ -83,14 +88,18 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
     }
 
     override fun setupListeners() {
-        viewModel.diceInEquation.subscribeBy(onNext = { diceEquationAdapter.setData(it) })
+        viewModel.diceInEquation.subscribeBy(onNext = { diceEquationAdapter.setData(it.map { die -> Pair(die, null) }) })
 
         viewModel.templates.subscribeBy(onNext = {
-
+            dice_pad_template_recyclerview.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
         })
 
         viewModel.previousRolls.subscribeBy(onNext = {
-            it.forEach { Log.d(LOG_TAG, it.result.toString()) }
+            previousRollsAdapter.setData(it)
+            if (previousRollsAdapter.itemCount > 0) {
+                fragment_dice_roller_history_recycler_view.smoothScrollToPosition(previousRollsAdapter.itemCount - 1)
+            }
+
         })
     }
 

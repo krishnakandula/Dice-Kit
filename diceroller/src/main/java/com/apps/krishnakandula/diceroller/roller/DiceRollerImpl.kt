@@ -20,12 +20,12 @@ class DiceRollerImpl @Inject constructor() : DiceRoller {
         return Single.create { emitter ->
             val rolls = dice.map { die ->
                 when (die) {
-                    is Dice.D2 -> Pair(die, roll(0, 2 + 1))
-                    is Dice.D4 -> Pair(die, roll(0, 4 + 1))
-                    is Dice.D6 -> Pair(die, roll(0, 6 + 1))
-                    is Dice.D8 -> Pair(die, roll(0, 8 + 1))
-                    is Dice.D10 -> Pair(die, roll(0, 10 + 1))
-                    is Dice.D20 -> Pair(die, roll(0, 20 + 1))
+                    is Dice.D2 -> Pair(die, roll(1, 2 + 1))
+                    is Dice.D4 -> Pair(die, roll(1, 4 + 1))
+                    is Dice.D6 -> Pair(die, roll(1, 6 + 1))
+                    is Dice.D8 -> Pair(die, roll(1, 8 + 1))
+                    is Dice.D10 -> Pair(die, roll(1, 10 + 1))
+                    is Dice.D20 -> Pair(die, roll(1, 20 + 1))
                 }
             }
             emitter.onSuccess(Result.Success(DiceRollResult(rolls, rolls.sumBy { it.second })))
