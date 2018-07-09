@@ -14,6 +14,7 @@ import com.apps.krishnakandula.diceroller.Dice
 import com.apps.krishnakandula.diceroller.DiceRollerComponentProvider
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.DaggerDiceRollerUIComponent
+import com.apps.krishnakandula.dicerollerui.di.DiceRollerDataModule
 import com.apps.krishnakandula.dicerollerui.di.DiceRollerUIModule
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.BackpressureStrategy
@@ -48,6 +49,7 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
         DaggerDiceRollerUIComponent.builder()
                 .diceRollerComponent((activity!!.application as DiceRollerComponentProvider).diceRollerComponent())
                 .diceRollerUIModule(DiceRollerUIModule(this, this.requireContext()))
+                .diceRollerDataModule(DiceRollerDataModule(this.requireContext()))
                 .build()
                 .inject(this)
     }

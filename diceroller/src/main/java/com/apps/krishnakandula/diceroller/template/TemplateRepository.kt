@@ -1,14 +1,12 @@
 package com.apps.krishnakandula.diceroller.template
 
-import com.apps.krishnakandula.diceroller.Dice
-import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Flowable
 
 interface TemplateRepository {
 
-    fun getTemplates(): Observable<List<Template>>
+    fun getTemplates(): Flowable<List<Template>>
 
-    fun addTemplate(name: String, rolls: List<Dice>): Completable
+    fun addTemplate(template: Template)
 
-    fun removeTemplate(id: String): Completable
+    fun deleteTemplate(template: Template)
 }

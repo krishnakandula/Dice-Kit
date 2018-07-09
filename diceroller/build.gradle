@@ -45,4 +45,9 @@ dependencies {
 
     //Rx
     implementation "$rxRelay"
+
+    // Room
+    implementation "$room"
+    implementation "$roomRx"
+    kapt "$roomAnnotationProcessor"
 }

@@ -18,8 +18,6 @@ class DiceRollerViewModel(private val diceRoller: DiceRoller) : ViewModel(), Bas
     val templates: BehaviorRelay<List<Template>> = BehaviorRelay.createDefault(emptyList())
     val previousRolls: BehaviorRelay<List<DiceRollResult>> = BehaviorRelay.createDefault(emptyList())
 
-    var numCreated = 0
-
     companion object {
         private val LOG_TAG = DiceRollerViewModel::class.java.simpleName
     }
@@ -28,7 +26,6 @@ class DiceRollerViewModel(private val diceRoller: DiceRoller) : ViewModel(), Bas
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(diceRoller.previousRolls()
                 .subscribeBy(onNext = { previousRolls.accept(it) }))
-        Log.v(LOG_TAG, "Number of times created: ${numCreated++}")
         return compositeDisposable
     }
 }

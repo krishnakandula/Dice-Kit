@@ -6,7 +6,8 @@ import com.apps.krishnakandula.dicerollerui.view.DiceRollerFragment
 import dagger.Component
 
 @Scopes.Feature
-@Component(dependencies = [DiceRollerComponent::class], modules = [DiceRollerUIModule::class])
+@Component(dependencies = [DiceRollerComponent::class],
+        modules = [DiceRollerUIModule::class, DiceRollerDataModule::class])
 interface DiceRollerUIComponent {
 
     fun inject(diceRollerFragment: DiceRollerFragment)
@@ -16,5 +17,6 @@ interface DiceRollerUIComponent {
         fun build(): DiceRollerUIComponent
         fun diceRollerComponent(diceRollerComponent: DiceRollerComponent): Builder
         fun diceRollerUIModule(diceRollerUIModule: DiceRollerUIModule): Builder
+        fun diceRollerDataModule(diceRollerDataModule: DiceRollerDataModule): Builder
     }
 }

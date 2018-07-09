@@ -37,4 +37,9 @@ dependencies {
     implementation "$dagger"
     kapt "$daggerKapt"
     kapt "$daggerCompiler"
+
+    // Room
+    implementation "$room"
+    implementation "$roomRx"
+    kapt "$roomAnnotationProcessor"
 }

@@ -53,6 +53,10 @@ dependencies {
     implementation "$cardViewSupportLib"
     // Kt Reflections
     implementation "$ktReflections"
+    // Room
+    implementation "$room"
+    implementation "$roomRx"
+    kapt "$roomAnnotationProcessor"
 }
 
 apply plugin: 'kotlin-android'

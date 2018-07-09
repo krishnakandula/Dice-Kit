@@ -35,7 +35,11 @@ ext {
     archLifecycleVersion = '1.1.1'
     constraintLayoutVersion = '1.1.2'
     supportLibVersion = '27.1.1'
+    roomVersion = '1.1.1'
 
+    room = "android.arch.persistence.room:runtime:$roomVersion"
+    roomAnnotationProcessor = "android.arch.persistence.room:compiler:$roomVersion"
+    roomRx = "android.arch.persistence.room:rxjava2:$roomVersion"
     junit = "junit:junit:$junitVersion"
     dagger = "com.google.dagger:dagger:$daggerVersion"
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
