@@ -7,13 +7,10 @@ import android.arch.persistence.room.TypeConverters
 import com.apps.krishnakandula.diceroller.Dice
 
 @Entity(tableName = TemplateSchema.TABLE_NAME)
-data class Template(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = TemplateSchema.Cols.ID) var id: Long?,
-                    @ColumnInfo(name = TemplateSchema.Cols.NAME) var name: String,
-                    @ColumnInfo(name = TemplateSchema.Cols.ROLLS) @TypeConverters(DiceTypeConverters::class) var rolls: Array<Dice>) {
-
-    // Needed for Room
-    constructor():this(null, "", emptyArray())
-}
+data class Template(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = TemplateSchema.Cols.ID) var id: Long? = null,
+                    @ColumnInfo(name = TemplateSchema.Cols.NAME) var name: String = "",
+                    @ColumnInfo(name = TemplateSchema.Cols.ROLLS)
+                    @TypeConverters(DiceTypeConverters::class) var rolls: Array<Dice> = emptyArray())
 
 object TemplateSchema {
     const val TABLE_NAME = "template"

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.diceroller.Dice
 import com.apps.krishnakandula.diceroller.DiceRollerComponentProvider
+import com.apps.krishnakandula.diceroller.template.Template
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.DaggerDiceRollerUIComponent
 import com.apps.krishnakandula.dicerollerui.di.DiceRollerDataModule
@@ -19,6 +20,7 @@ import com.apps.krishnakandula.dicerollerui.di.DiceRollerUIModule
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.dice_pad.*
@@ -32,12 +34,13 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
     @Inject lateinit var backPressureStrategy: BackpressureStrategy
     @Inject lateinit var diceEquationAdapter: DiceEquationAdapter
     @Inject lateinit var previousRollsAdapter: PreviousRollsAdapter
+    @Inject lateinit var templatesAdapter: TemplateAdapter
     private var disposable = CompositeDisposable()
 
     private val diceBtnClickRelay = PublishRelay.create<Dice>()
     private val deleteBtnClickRelay = PublishRelay.create<Unit>()
     private val equalsBtnClickRelay = PublishRelay.create<List<Dice>>()
-    private val saveBtnClickRelay = PublishRelay.create<List<Dice>>()
+    private val saveBtnClickRelay = PublishRelay.create<Template>()
 
     companion object {
         private val LOG_TAG = DiceRollerFragment::class.java.simpleName
@@ -67,6 +70,8 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
         fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL,
                 false)
+        dice_pad_template_recyclerview.adapter = templatesAdapter
+        dice_pad_template_recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         setupActions()
         setupListeners()
         disposable.addAll(presenter.bindActions(), viewModel.bindSources())
@@ -84,7 +89,11 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
         dice_pad_d8_btn.setOnClickListener { diceBtnClickRelay.accept(Dice.D8()) }
         dice_pad_d10_btn.setOnClickListener { diceBtnClickRelay.accept(Dice.D10()) }
         dice_pad_d20_btn.setOnClickListener { diceBtnClickRelay.accept(Dice.D20()) }
-        dice_pad_save_btn.setOnClickListener { saveBtnClickRelay.accept(viewModel.diceInEquation.value) }
+        dice_pad_save_btn.setOnClickListener {
+            // TODO: Start dialog to ask for name
+            val template = Template(null, "Test", viewModel.diceInEquation.value.toTypedArray())
+            saveBtnClickRelay.accept(template)
+        }
         dice_pad_eq_btn.setOnClickListener { equalsBtnClickRelay.accept(viewModel.diceInEquation.value) }
         dice_pad_delete_btn.setOnClickListener { deleteBtnClickRelay.accept(Unit) }
     }
@@ -92,8 +101,12 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
     override fun setupListeners() {
         viewModel.diceInEquation.subscribeBy(onNext = { diceEquationAdapter.setData(it.map { die -> Pair(die, null) }) })
 
-        viewModel.templates.subscribeBy(onNext = {
-            dice_pad_template_recyclerview.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+        viewModel.templates.subscribeBy(onNext = { templates ->
+            if (templates.isEmpty()) dice_pad_template_recyclerview.visibility = View.GONE
+            else {
+                dice_pad_template_recyclerview.visibility = View.VISIBLE
+                templatesAdapter.setData(templates)
+            }
         })
 
         viewModel.previousRolls.subscribeBy(onNext = {
@@ -109,7 +122,7 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions {
 
     override fun onClickEqualsBtn(): Flowable<List<Dice>> = equalsBtnClickRelay.toFlowable(backPressureStrategy)
 
-    override fun onClickSaveBtn(): Flowable<List<Dice>> = saveBtnClickRelay.toFlowable(backPressureStrategy)
+    override fun onClickSaveBtn(): Flowable<Template> = saveBtnClickRelay.toFlowable(backPressureStrategy)
 
     override fun onClickDeleteBtn(): Flowable<Unit> = deleteBtnClickRelay.toFlowable(backPressureStrategy)
 }

@@ -12,7 +12,7 @@ class DiceTypeConverters {
             .toTypedArray()
 
     @TypeConverter
-    fun toString(dice: Array<Dice>): String = dice.map { fromDice(it) }.joinToString { " $it" }
+    fun toString(dice: Array<Dice>): String = dice.map { fromDice(it) }.joinToString(" ")
 
     private fun fromChar(str: String): Dice? {
         return when (str) {
