@@ -2,7 +2,7 @@ package com.apps.krishnakandula.dmtoolkit
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.apps.krishnakandula.dicerollerui.view.DiceRollerFragment
+import com.apps.krishnakandula.dicerollerui.view.roll.DiceRollerFragment
 
 class MainActivity : AppCompatActivity() {
 

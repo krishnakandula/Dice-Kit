@@ -1,4 +1,4 @@
-package com.apps.krishnakandula.dicerollerui.view
+package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider

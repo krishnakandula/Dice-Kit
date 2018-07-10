@@ -1,4 +1,4 @@
-package com.apps.krishnakandula.dicerollerui.view
+package com.apps.krishnakandula.dicerollerui.view.roll
 
 import com.apps.krishnakandula.diceroller.Dice
 import com.apps.krishnakandula.diceroller.template.Template
@@ -15,8 +15,6 @@ interface DiceRollerView {
         fun onClickDiceBtn(): Flowable<Dice>
 
         fun onClickEqualsBtn(): Flowable<List<Dice>>
-
-        fun onClickSaveBtn(): Flowable<Template>
 
         fun onClickDeleteBtn(): Flowable<Unit>
     }

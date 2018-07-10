@@ -1,4 +1,4 @@
-package com.apps.krishnakandula.dicerollerui.view
+package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView

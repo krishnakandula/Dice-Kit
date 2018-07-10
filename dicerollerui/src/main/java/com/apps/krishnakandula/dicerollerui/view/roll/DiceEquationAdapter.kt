@@ -1,7 +1,6 @@
-package com.apps.krishnakandula.dicerollerui.view
+package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.content.Context
-import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View

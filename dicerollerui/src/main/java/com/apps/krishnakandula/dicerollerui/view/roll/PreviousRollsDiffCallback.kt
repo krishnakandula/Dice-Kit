@@ -1,4 +1,4 @@
-package com.apps.krishnakandula.dicerollerui.view
+package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.support.v7.util.DiffUtil
 import com.apps.krishnakandula.diceroller.roller.DiceRollResult

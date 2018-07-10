@@ -3,13 +3,9 @@ package com.apps.krishnakandula.dicerollerui.di
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.common.view.BasePresenter
-import com.apps.krishnakandula.diceroller.roller.DiceRoller
-import com.apps.krishnakandula.dicerollerui.view.*
+import com.apps.krishnakandula.dicerollerui.view.roll.*
 import dagger.Module
 import dagger.Provides
 import io.reactivex.BackpressureStrategy
