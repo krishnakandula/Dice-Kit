@@ -4,12 +4,10 @@ import android.util.Log
 import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.common.util.Result
 import com.apps.krishnakandula.common.view.BasePresenter
-import com.apps.krishnakandula.diceroller.roller.DiceRoller
-import com.apps.krishnakandula.diceroller.template.TemplateRepository
+import com.apps.krishnakandula.dicerollercore.roller.DiceRoller
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @Scopes.Feature

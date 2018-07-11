@@ -1,7 +1,6 @@
 package com.apps.krishnakandula.dicerollerui.view.roll
 
-import com.apps.krishnakandula.diceroller.Dice
-import com.apps.krishnakandula.diceroller.template.Template
+import com.apps.krishnakandula.dicerollercore.Dice
 import io.reactivex.Flowable
 
 interface DiceRollerView {

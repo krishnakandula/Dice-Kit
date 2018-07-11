@@ -1,1 +1,1 @@
-include ':app', ':diceroller', ':common', ':dicerollerui'
+include ':app', ':common', ':dicerollerui', ':dicerollercore'
