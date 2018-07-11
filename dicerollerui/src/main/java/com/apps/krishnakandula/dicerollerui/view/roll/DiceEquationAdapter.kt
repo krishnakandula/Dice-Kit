@@ -9,22 +9,22 @@ import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollerui.R
 import com.jakewharton.rxrelay2.BehaviorRelay
-import kotlinx.android.synthetic.main.dice_item.view.*
+import kotlinx.android.synthetic.main.dice_stack_itemview.view.*
 import javax.inject.Inject
 
 @Scopes.Feature
 class DiceEquationAdapter @Inject constructor(private val context: Context)
     : RecyclerView.Adapter<DiceEquationAdapter.DiceEquationViewHolder>() {
 
-    private val dice = BehaviorRelay.createDefault<List<Pair<Dice, Int?>>>(emptyList())
+    private val dice = BehaviorRelay.createDefault<List<List<Dice>>>(emptyList())
 
-    fun setData(result: List<Pair<Dice, Int?>>) {
+    fun setData(result: List<List<Dice>>) {
         this.dice.accept(result)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiceEquationViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.dice_item, parent, false)
+        val itemView = LayoutInflater.from(context).inflate(R.layout.dice_stack_itemview, parent, false)
         return DiceEquationViewHolder(itemView)
     }
 
@@ -36,25 +36,11 @@ class DiceEquationAdapter @Inject constructor(private val context: Context)
 
     inner class DiceEquationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(result: Pair<Dice, Int?>) {
-            when (result.first) {
-                is Dice.D2 -> itemView.dice_item_dice_type_textview.text = "D2"
-                is Dice.D4 -> itemView.dice_item_dice_type_textview.text = "D4"
-                is Dice.D6 -> itemView.dice_item_dice_type_textview.text = "D6"
-                is Dice.D8 -> itemView.dice_item_dice_type_textview.text = "D8"
-                is Dice.D10 -> itemView.dice_item_dice_type_textview.text = "D10"
-                is Dice.D20 -> itemView.dice_item_dice_type_textview.text = "D20"
-            }
-
-            if (result.second != null) {
-                itemView.dice_item_dice_roll_textview.visibility = View.VISIBLE
-                itemView.dice_item_dice_roll_textview.text = "${result.second}"
-                itemView.dice_item_dice_roll_textview.setTextColor(context.getColor(R.color.white))
-                itemView.dice_item_dice_type_textview.setTextColor(context.getColor(R.color.white))
-                itemView.dice_item_card_view.setCardBackgroundColor(context.getColor(R.color.primary))
-            } else {
-                itemView.dice_item_dice_roll_textview.visibility = View.GONE
-            }
+        fun bind(dice: List<Dice>) {
+            val adapter = DiceEquationStackAdapter(context) { itemView.dice_stack_itemview_card_stack_view.reverse() }
+            itemView.dice_stack_itemview_card_stack_view.setAdapter(adapter)
+            itemView.dice_stack_itemview_count_text_view.text = "${dice.size}"
+            adapter.setData(dice)
         }
     }
 }

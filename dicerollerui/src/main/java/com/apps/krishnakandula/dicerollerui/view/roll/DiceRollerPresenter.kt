@@ -26,9 +26,19 @@ class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerVie
                 .doOnNext { Log.v(LOG_TAG, "Dice Button pressed") }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(onNext = { die ->
-                    val dice = viewModel.diceInEquation.value.toMutableList()
-                    dice.add(die)
-                    viewModel.diceInEquation.accept(dice)
+                    val equation = viewModel.diceInEquation.value.toMutableList()
+                    if (equation.isEmpty()) equation.add(listOf(die))
+                    else {
+                        if (equation.last().first()::class == die::class) {
+                            val sameDice = equation.last().toMutableList()
+                            sameDice.add(die)
+                            equation.removeAt(equation.lastIndex)
+                            equation.add(sameDice)
+                        } else {
+                            equation.add(listOf(die))
+                        }
+                    }
+                    viewModel.diceInEquation.accept(equation)
                 }))
 
         disposable.add(actions.onClickEqualsBtn()

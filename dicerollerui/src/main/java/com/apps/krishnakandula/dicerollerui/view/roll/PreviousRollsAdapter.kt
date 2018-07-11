@@ -46,7 +46,8 @@ class PreviousRollsAdapter @Inject constructor(private val context: Context)
             itemView.previous_rolls_itemview_recycler_view.layoutManager = LinearLayoutManager(context,
                     LinearLayoutManager.HORIZONTAL,
                     false)
-            adapter.setData(result.dice)
+            // TODO: Fix adapter
+//            adapter.setData(result.dice.map {  })
             itemView.previous_rolls_itemview_result_text_view.text = "${result.result}"
         }
     }
