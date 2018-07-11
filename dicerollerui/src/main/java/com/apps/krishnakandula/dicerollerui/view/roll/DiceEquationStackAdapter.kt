@@ -33,10 +33,6 @@ class DiceEquationStackAdapter(context: Context,
             is Dice.D10 -> itemView?.dice_item_dice_type_textview?.text = "D10"
             is Dice.D20 -> itemView?.dice_item_dice_type_textview?.text = "D20"
         }
-//        itemView?.setOnLongClickListener {
-//            onClickStack()
-//            true
-//        }
 
         return itemView!!
     }
