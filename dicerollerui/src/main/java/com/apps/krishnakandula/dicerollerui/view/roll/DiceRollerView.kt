@@ -13,7 +13,7 @@ interface DiceRollerView {
 
         fun onClickDiceBtn(): Flowable<Dice>
 
-        fun onClickEqualsBtn(): Flowable<List<Dice>>
+        fun onClickEqualsBtn(): Flowable<List<List<Dice>>>
 
         fun onClickDeleteBtn(): Flowable<Unit>
     }

@@ -21,8 +21,9 @@ class PreviousRollsDiffCallback(private val oldItems: List<DiceRollResult>,
         if (oldItem.dice.size != newItem.dice.size) return false
         oldItem.dice.forEachIndexed { index, pair ->
             val newItemPair = newItem.dice[index]
-            if (newItemPair.second != pair.second) return false
-            if (newItemPair.first.javaClass != pair.first.javaClass) return false
+            // TODO: Fix PreviousRollsDiffCallback
+//            if (newItemPair.second != pair.second) return false
+//            if (newItemPair.first.javaClass != pair.first.javaClass) return false
         }
 
         return true

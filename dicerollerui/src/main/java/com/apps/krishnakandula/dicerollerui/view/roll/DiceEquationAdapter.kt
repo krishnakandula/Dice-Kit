@@ -16,9 +16,9 @@ import javax.inject.Inject
 class DiceEquationAdapter @Inject constructor(private val context: Context)
     : RecyclerView.Adapter<DiceEquationAdapter.DiceEquationViewHolder>() {
 
-    private val dice = BehaviorRelay.createDefault<List<Pair<Dice, Int?>>>(emptyList())
+    private val dice = BehaviorRelay.createDefault<List<List<Dice>>>(emptyList())
 
-    fun setData(result: List<Pair<Dice, Int?>>) {
+    fun setData(result: List<List<Dice>>) {
         this.dice.accept(result)
         notifyDataSetChanged()
     }
@@ -35,9 +35,10 @@ class DiceEquationAdapter @Inject constructor(private val context: Context)
     }
 
     inner class DiceEquationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        fun bind(result: Pair<Dice, Int?>) {
-            when (result.first) {
+        //TODO: Fix this so it shows multiple
+        fun bind(dice: List<Dice>) {
+            val result = dice.first()
+            when (result) {
                 is Dice.D2 -> itemView.dice_item_dice_type_textview.text = "D2"
                 is Dice.D4 -> itemView.dice_item_dice_type_textview.text = "D4"
                 is Dice.D6 -> itemView.dice_item_dice_type_textview.text = "D6"
@@ -46,15 +47,15 @@ class DiceEquationAdapter @Inject constructor(private val context: Context)
                 is Dice.D20 -> itemView.dice_item_dice_type_textview.text = "D20"
             }
 
-            if (result.second != null) {
-                itemView.dice_item_dice_roll_textview.visibility = View.VISIBLE
-                itemView.dice_item_dice_roll_textview.text = "${result.second}"
-                itemView.dice_item_dice_roll_textview.setTextColor(context.getColor(R.color.white))
-                itemView.dice_item_dice_type_textview.setTextColor(context.getColor(R.color.white))
-                itemView.dice_item_card_view.setCardBackgroundColor(context.getColor(R.color.primary))
-            } else {
-                itemView.dice_item_dice_roll_textview.visibility = View.GONE
-            }
+//            if (result.second != null) {
+//                itemView.dice_item_dice_roll_textview.visibility = View.VISIBLE
+//                itemView.dice_item_dice_roll_textview.text = "${result.second}"
+//                itemView.dice_item_dice_roll_textview.setTextColor(context.getColor(R.color.white))
+//                itemView.dice_item_dice_type_textview.setTextColor(context.getColor(R.color.white))
+//                itemView.dice_item_card_view.setCardBackgroundColor(context.getColor(R.color.primary))
+//            } else {
+//                itemView.dice_item_dice_roll_textview.visibility = View.GONE
+//            }
         }
     }
 }

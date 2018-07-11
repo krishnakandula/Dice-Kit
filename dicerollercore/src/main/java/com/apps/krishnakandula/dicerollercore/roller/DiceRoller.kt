@@ -10,7 +10,7 @@ interface DiceRoller {
 
     fun addToHistory(result: DiceRollResult): Completable
 
-    fun roll(dice: List<Dice>): Single<out Result<DiceRollResult>>
+    fun roll(dice: List<List<Dice>>): Single<out Result<DiceRollResult>>
 
     fun previousRolls(): Observable<List<DiceRollResult>>
 

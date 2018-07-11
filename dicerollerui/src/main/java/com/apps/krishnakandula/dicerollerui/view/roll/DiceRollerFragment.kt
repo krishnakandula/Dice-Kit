@@ -35,7 +35,7 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions, D
 
     private val diceBtnClickRelay = PublishRelay.create<Dice>()
     private val deleteBtnClickRelay = PublishRelay.create<Unit>()
-    private val equalsBtnClickRelay = PublishRelay.create<List<Dice>>()
+    private val equalsBtnClickRelay = PublishRelay.create<List<List<Dice>>>()
 
     companion object {
         private val LOG_TAG = DiceRollerFragment::class.java.simpleName
@@ -94,7 +94,7 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions, D
     }
 
     override fun setupListeners() {
-        viewModel.diceInEquation.subscribeBy(onNext = { diceEquationAdapter.setData(it.map { die -> Pair(die, null) }) })
+        viewModel.diceInEquation.subscribeBy(onNext = { diceEquationAdapter.setData(it) })
 
         viewModel.templates.subscribeBy(onNext = { templates ->
             if (templates.isEmpty()) dice_pad_template_recyclerview.visibility = View.GONE
@@ -114,7 +114,7 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions, D
 
     override fun onClickDiceBtn(): Flowable<Dice> = diceBtnClickRelay.toFlowable(backPressureStrategy)
 
-    override fun onClickEqualsBtn(): Flowable<List<Dice>> = equalsBtnClickRelay.toFlowable(backPressureStrategy)
+    override fun onClickEqualsBtn(): Flowable<List<List<Dice>>> = equalsBtnClickRelay.toFlowable(backPressureStrategy)
 
     override fun onClickDeleteBtn(): Flowable<Unit> = deleteBtnClickRelay.toFlowable(backPressureStrategy)
 

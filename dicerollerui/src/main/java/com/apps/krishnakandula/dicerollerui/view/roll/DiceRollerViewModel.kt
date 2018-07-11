@@ -15,7 +15,7 @@ import io.reactivex.rxkotlin.subscribeBy
 class DiceRollerViewModel(private val diceRoller: DiceRoller,
                           private val templateRepository: TemplateRepository) : ViewModel(), BaseViewModel {
 
-    val diceInEquation: BehaviorRelay<List<Dice>> = BehaviorRelay.createDefault(emptyList())
+    val diceInEquation: BehaviorRelay<List<List<Dice>>> = BehaviorRelay.createDefault(emptyList())
     val templates: BehaviorRelay<List<Template>> = BehaviorRelay.createDefault(emptyList())
     val previousRolls: BehaviorRelay<List<DiceRollResult>> = BehaviorRelay.createDefault(emptyList())
 

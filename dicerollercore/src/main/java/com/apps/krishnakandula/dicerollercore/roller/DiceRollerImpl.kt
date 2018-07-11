@@ -16,23 +16,24 @@ class DiceRollerImpl @Inject constructor() : DiceRoller {
 
     private val prevRollsRelay: BehaviorRelay<List<DiceRollResult>> = BehaviorRelay.createDefault(emptyList())
 
-    override fun roll(dice: List<Dice>): Single<out Result<DiceRollResult>> {
-        return Single.create { emitter ->
-            val rolls = dice.map { die ->
-                when (die) {
-                    is Dice.D2 -> Pair(die, roll(1, 2 + 1))
-                    is Dice.D4 -> Pair(die, roll(1, 4 + 1))
-                    is Dice.D6 -> Pair(die, roll(1, 6 + 1))
-                    is Dice.D8 -> Pair(die, roll(1, 8 + 1))
-                    is Dice.D10 -> Pair(die, roll(1, 10 + 1))
-                    is Dice.D20 -> Pair(die, roll(1, 20 + 1))
-                }
-            }
-            emitter.onSuccess(Result.Success(DiceRollResult(rolls, rolls.sumBy { it.second })))
-        }
+    override fun roll(dice: List<List<Dice>>): Single<out Result<DiceRollResult>> = Single.create { emitter ->
+        var rolls = dice.map { roll -> roll.map { rollDie(it) } }
+        val result = DiceRollResult(rolls, rolls.sumBy { it.sumBy { pair -> pair.second } })
+        emitter.onSuccess(Result.Success(result))
     }
 
     override fun previousRolls(): Observable<List<DiceRollResult>> = prevRollsRelay
+
+    private fun rollDie(die: Dice): Pair<Dice, Int> {
+        return when (die) {
+            is Dice.D2 -> Pair(die, roll(1, 2 + 1))
+            is Dice.D4 -> Pair(die, roll(1, 4 + 1))
+            is Dice.D6 -> Pair(die, roll(1, 6 + 1))
+            is Dice.D8 -> Pair(die, roll(1, 8 + 1))
+            is Dice.D10 -> Pair(die, roll(1, 10 + 1))
+            is Dice.D20 -> Pair(die, roll(1, 20 + 1))
+        }
+    }
 
     private fun roll(min: Int, max: Int): Int {
         val range = max - min
