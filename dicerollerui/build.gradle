@@ -24,6 +24,11 @@ android {
 
 }
 
+ext {
+    cardStackViewVersion = '1.0.0-beta9'
+    cardStackView = "com.yuyakaido.android:card-stack-view:${cardStackViewVersion}"
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
@@ -57,6 +62,10 @@ dependencies {
     implementation "$room"
     implementation "$roomRx"
     kapt "$roomAnnotationProcessor"
+
+    // Card stack view
+    implementation "$cardStackView"
+
 }
 
 apply plugin: 'kotlin-android'
