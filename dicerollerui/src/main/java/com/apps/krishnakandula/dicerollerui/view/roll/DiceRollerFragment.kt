@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
+import com.apps.krishnakandula.dicerollercore.data.DiceRollerDataModule
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.*
 import com.apps.krishnakandula.dicerollerui.view.savetemplate.SaveTemplateDialogFragment
@@ -47,7 +48,6 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions, D
         diceRollerUIComponent = DaggerDiceRollerUIComponent.builder()
                 .diceRollerComponent((activity!!.application as DiceRollerComponentProvider).diceRollerComponent())
                 .diceRollerUIModule(DiceRollerUIModule(this, this.requireContext()))
-                .diceRollerDataModule(DiceRollerDataModule(this.requireContext()))
                 .build()
         diceRollerUIComponent.inject(this)
     }

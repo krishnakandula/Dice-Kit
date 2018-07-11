@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.DaggerSaveTemplateUIComponent
 import com.apps.krishnakandula.dicerollerui.di.DiceRollerUIComponentProvider
@@ -18,7 +19,7 @@ class SaveTemplateDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DaggerSaveTemplateUIComponent.builder()
-                .diceRollerUIComponent((requireContext() as DiceRollerUIComponentProvider).diceRollerUIComponent())
+                .diceRollerComponent((activity!!.application as DiceRollerComponentProvider).diceRollerComponent())
                 .saveTemplateUIModule(SaveTemplateUIModule())
                 .build()
                 .inject(this)

@@ -4,6 +4,7 @@ import android.app.Application
 import com.apps.krishnakandula.dicerollercore.DaggerDiceRollerComponent
 import com.apps.krishnakandula.dicerollercore.DiceRollerComponent
 import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
+import com.apps.krishnakandula.dicerollercore.data.DiceRollerDataModule
 import com.apps.krishnakandula.dicerollercore.roller.DiceRollerModule
 
 class DMToolkitApp : Application(), DiceRollerComponentProvider {
@@ -14,6 +15,7 @@ class DMToolkitApp : Application(), DiceRollerComponentProvider {
         super.onCreate()
         diceRollerComponent = DaggerDiceRollerComponent.builder()
                 .diceRollerModule(DiceRollerModule())
+                .diceRollerDataModule(DiceRollerDataModule(applicationContext))
                 .build()
     }
 

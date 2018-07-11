@@ -1,10 +1,9 @@
-package com.apps.krishnakandula.dicerollerui.di
+package com.apps.krishnakandula.dicerollercore.data
 
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.dicerollercore.template.TemplateRepository
-import com.apps.krishnakandula.dicerollerui.data.DiceRollerRoomDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -17,17 +16,17 @@ class DiceRollerDataModule(private val context: Context) {
     fun provideDiceRollerRoomDbName(): String = "dice_roller_room_db"
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Application
     fun provideDiceRollerRoomDbClass(): Class<DiceRollerRoomDatabase> = DiceRollerRoomDatabase::class.java
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Application
     fun provideDiceRollerRoomDb(dbClass: Class<DiceRollerRoomDatabase>,
                                 @Named("dice_roller_room_db_name") dbName: String): DiceRollerRoomDatabase {
         return Room.databaseBuilder(context, dbClass, dbName).build()
     }
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Application
     fun provideTemplateRepository(db: DiceRollerRoomDatabase): TemplateRepository = db.templateRepository()
 }

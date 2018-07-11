@@ -1,4 +1,4 @@
-package com.apps.krishnakandula.dicerollercore.template.room
+package com.apps.krishnakandula.dicerollercore.template
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
