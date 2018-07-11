@@ -31,7 +31,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // Modules
-    implementation project(':diceroller')
+    implementation project(':dicerollercore')
     implementation project(':dicerollerui')
     // Dagger
     implementation "$dagger"

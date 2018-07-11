@@ -1,7 +1,7 @@
 package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.support.v7.util.DiffUtil
-import com.apps.krishnakandula.diceroller.roller.DiceRollResult
+import com.apps.krishnakandula.dicerollercore.roller.DiceRollResult
 
 class PreviousRollsDiffCallback(private val oldItems: List<DiceRollResult>,
                                 private val newItems: List<DiceRollResult>) : DiffUtil.Callback() {

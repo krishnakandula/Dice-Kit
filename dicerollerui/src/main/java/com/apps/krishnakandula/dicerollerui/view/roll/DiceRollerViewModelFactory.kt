@@ -3,8 +3,8 @@ package com.apps.krishnakandula.dicerollerui.view.roll
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.apps.krishnakandula.common.Scopes
-import com.apps.krishnakandula.diceroller.roller.DiceRoller
-import com.apps.krishnakandula.diceroller.template.TemplateRepository
+import com.apps.krishnakandula.dicerollercore.roller.DiceRoller
+import com.apps.krishnakandula.dicerollercore.template.TemplateRepository
 import javax.inject.Inject
 
 @Scopes.Feature

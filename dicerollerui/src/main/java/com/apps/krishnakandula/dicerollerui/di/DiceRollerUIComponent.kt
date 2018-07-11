@@ -1,7 +1,7 @@
 package com.apps.krishnakandula.dicerollerui.di
 
 import com.apps.krishnakandula.common.Scopes
-import com.apps.krishnakandula.diceroller.DiceRollerComponent
+import com.apps.krishnakandula.dicerollercore.DiceRollerComponent
 import com.apps.krishnakandula.dicerollerui.view.roll.DiceRollerFragment
 import dagger.Component
 

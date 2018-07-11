@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.apps.krishnakandula.common.Scopes
-import com.apps.krishnakandula.diceroller.roller.DiceRollResult
+import com.apps.krishnakandula.dicerollercore.roller.DiceRollResult
 import com.apps.krishnakandula.dicerollerui.R
 import com.jakewharton.rxrelay2.BehaviorRelay
 import kotlinx.android.synthetic.main.previous_rolls_itemview.view.*

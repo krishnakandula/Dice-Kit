@@ -7,9 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.apps.krishnakandula.common.view.BasePresenter
-import com.apps.krishnakandula.diceroller.Dice
-import com.apps.krishnakandula.diceroller.DiceRollerComponentProvider
-import com.apps.krishnakandula.diceroller.template.Template
+import com.apps.krishnakandula.dicerollercore.Dice
+import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.*
 import com.apps.krishnakandula.dicerollerui.view.savetemplate.SaveTemplateDialogFragment

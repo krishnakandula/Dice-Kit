@@ -2,13 +2,12 @@ package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.arch.lifecycle.ViewModel
 import com.apps.krishnakandula.common.view.BaseViewModel
-import com.apps.krishnakandula.diceroller.Dice
-import com.apps.krishnakandula.diceroller.roller.DiceRollResult
-import com.apps.krishnakandula.diceroller.roller.DiceRoller
-import com.apps.krishnakandula.diceroller.template.Template
-import com.apps.krishnakandula.diceroller.template.TemplateRepository
+import com.apps.krishnakandula.dicerollercore.Dice
+import com.apps.krishnakandula.dicerollercore.roller.DiceRollResult
+import com.apps.krishnakandula.dicerollercore.roller.DiceRoller
+import com.apps.krishnakandula.dicerollercore.template.Template
+import com.apps.krishnakandula.dicerollercore.template.TemplateRepository
 import com.jakewharton.rxrelay2.BehaviorRelay
-import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy

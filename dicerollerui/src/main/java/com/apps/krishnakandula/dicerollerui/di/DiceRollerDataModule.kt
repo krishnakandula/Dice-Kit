@@ -3,7 +3,7 @@ package com.apps.krishnakandula.dicerollerui.di
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.apps.krishnakandula.common.Scopes
-import com.apps.krishnakandula.diceroller.template.TemplateRepository
+import com.apps.krishnakandula.dicerollercore.template.TemplateRepository
 import com.apps.krishnakandula.dicerollerui.data.DiceRollerRoomDatabase
 import dagger.Module
 import dagger.Provides
