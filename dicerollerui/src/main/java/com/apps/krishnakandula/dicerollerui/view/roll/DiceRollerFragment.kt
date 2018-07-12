@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
-import com.apps.krishnakandula.dicerollercore.data.DiceRollerDataModule
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.*
 import com.apps.krishnakandula.dicerollerui.view.savetemplate.SaveTemplateDialogFragment
@@ -22,7 +21,10 @@ import kotlinx.android.synthetic.main.dice_pad.*
 import kotlinx.android.synthetic.main.fragment_dice_roller.*
 import javax.inject.Inject
 
-class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions, DiceRollerUIComponentProvider {
+class DiceRollerFragment : Fragment(),
+        DiceRollerView,
+        DiceRollerView.UserActions,
+        DiceRollerUIComponentProvider {
 
     @Inject lateinit var presenter: BasePresenter
     @Inject lateinit var viewModel: DiceRollerViewModel
@@ -31,6 +33,7 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions, D
     @Inject lateinit var previousRollsAdapter: PreviousRollsAdapter
     @Inject lateinit var templatesAdapter: TemplateAdapter
     private lateinit var diceRollerUIComponent: DiceRollerUIComponent
+    private lateinit var equationEditLayoutManager: LinearLayoutManager
     private var disposable = CompositeDisposable()
 
     private val diceBtnClickRelay = PublishRelay.create<Dice>()
@@ -58,15 +61,19 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions, D
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         fragment_dice_roller_equation_edit_recycler_view.adapter = diceEquationAdapter
-        fragment_dice_roller_equation_edit_recycler_view.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        equationEditLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        fragment_dice_roller_equation_edit_recycler_view.layoutManager = equationEditLayoutManager
+
         fragment_dice_roller_history_recycler_view.adapter = previousRollsAdapter
         fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL,
                 false)
+
         dice_pad_template_recyclerview.adapter = templatesAdapter
         dice_pad_template_recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
         setupActions()
         setupListeners()
         disposable.addAll(presenter.bindActions(), viewModel.bindSources())
@@ -119,4 +126,5 @@ class DiceRollerFragment : Fragment(), DiceRollerView, DiceRollerView.Actions, D
     override fun onClickDeleteBtn(): Flowable<Unit> = deleteBtnClickRelay.toFlowable(backPressureStrategy)
 
     override fun diceRollerUIComponent(): DiceRollerUIComponent = diceRollerUIComponent
+
 }

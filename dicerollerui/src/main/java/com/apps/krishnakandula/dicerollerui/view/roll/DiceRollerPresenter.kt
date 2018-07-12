@@ -11,7 +11,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
 @Scopes.Feature
-class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerView.Actions,
+class DiceRollerPresenter @Inject constructor(private val userActions: DiceRollerView.UserActions,
                                               private val viewModel: DiceRollerViewModel,
                                               private val diceRoller: DiceRoller) : BasePresenter {
 
@@ -21,7 +21,7 @@ class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerVie
 
     override fun bindActions(): CompositeDisposable {
         val disposable = CompositeDisposable()
-        disposable.add(actions.onClickDiceBtn()
+        disposable.add(userActions.onClickDiceBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Dice Button pressed") }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -41,7 +41,7 @@ class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerVie
                     viewModel.diceInEquation.accept(equation)
                 }))
 
-        disposable.add(actions.onClickEqualsBtn()
+        disposable.add(userActions.onClickEqualsBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Equals Button pressed") }
                 .filter { it.isNotEmpty() }
@@ -61,15 +61,22 @@ class DiceRollerPresenter @Inject constructor(private val actions: DiceRollerVie
                     }
                 }))
 
-        disposable.add(actions.onClickDeleteBtn()
+        disposable.add(userActions.onClickDeleteBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Delete Button pressed") }
                 .filter { viewModel.diceInEquation.value.isNotEmpty() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(onNext = {
-                    val dice = viewModel.diceInEquation.value.toMutableList()
-                    dice.removeAt(dice.lastIndex)
-                    viewModel.diceInEquation.accept(dice)
+                    val roll = viewModel.diceInEquation.value.toMutableList()
+                    if (roll.last().size > 1) {
+                        val dice = roll.last().toMutableList()
+                        dice.removeAt(dice.lastIndex)
+                        roll.removeAt(roll.lastIndex)
+                        roll.add(dice)
+                    } else {
+                        roll.removeAt(roll.lastIndex)
+                    }
+                    viewModel.diceInEquation.accept(roll)
                 }))
 
         return disposable

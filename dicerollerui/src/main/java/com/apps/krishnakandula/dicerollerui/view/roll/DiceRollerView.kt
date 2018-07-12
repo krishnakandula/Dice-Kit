@@ -9,7 +9,7 @@ interface DiceRollerView {
 
     fun setupListeners()
 
-    interface Actions {
+    interface UserActions {
 
         fun onClickDiceBtn(): Flowable<Dice>
 

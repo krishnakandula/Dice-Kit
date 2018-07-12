@@ -20,7 +20,7 @@ class DiceRollerUIModule(private val diceRollerFragment: DiceRollerFragment,
 
     @Provides
     @Scopes.Feature
-    fun provideDiceRollerViewActions(): DiceRollerView.Actions = diceRollerFragment
+    fun provideDiceRollerUserActions(): DiceRollerView.UserActions = diceRollerFragment
 
     @Provides
     @Scopes.Feature
