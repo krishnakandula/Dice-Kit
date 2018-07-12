@@ -7,7 +7,7 @@ import com.apps.krishnakandula.dicerollercore.roller.DiceRoller
 import com.apps.krishnakandula.dicerollercore.template.TemplateRepository
 import javax.inject.Inject
 
-@Scopes.Feature
+@Scopes.Fragment
 class DiceRollerViewModelFactory @Inject constructor(private val diceRoller: DiceRoller,
                                                      private val templateRepository: TemplateRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

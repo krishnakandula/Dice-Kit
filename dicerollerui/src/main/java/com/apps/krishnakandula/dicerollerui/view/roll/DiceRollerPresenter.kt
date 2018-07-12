@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
-@Scopes.Feature
+@Scopes.Fragment
 class DiceRollerPresenter @Inject constructor(private val userActions: DiceRollerView.UserActions,
                                               private val viewModel: DiceRollerViewModel,
                                               private val diceRoller: DiceRoller) : BasePresenter {

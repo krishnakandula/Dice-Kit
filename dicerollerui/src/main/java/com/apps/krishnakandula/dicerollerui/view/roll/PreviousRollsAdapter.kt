@@ -14,7 +14,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import kotlinx.android.synthetic.main.previous_rolls_itemview.view.*
 import javax.inject.Inject
 
-@Scopes.Feature
+@Scopes.Fragment
 class PreviousRollsAdapter @Inject constructor(private val context: Context)
     : RecyclerView.Adapter<PreviousRollsAdapter.PreviousRollsViewHolder>() {
 

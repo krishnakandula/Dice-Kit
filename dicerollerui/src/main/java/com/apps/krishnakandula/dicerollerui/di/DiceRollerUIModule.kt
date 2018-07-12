@@ -15,23 +15,23 @@ class DiceRollerUIModule(private val diceRollerFragment: DiceRollerFragment,
                          private val context: Context) {
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Fragment
     fun provideDiceRollerFragment(): DiceRollerFragment = diceRollerFragment
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Fragment
     fun provideDiceRollerUserActions(): DiceRollerView.UserActions = diceRollerFragment
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Fragment
     fun provideViewModelClass(): Class<DiceRollerViewModel> = DiceRollerViewModel::class.java
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Fragment
     fun provideViewModelFactory(factory: DiceRollerViewModelFactory): ViewModelProvider.Factory = factory
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Fragment
     fun provideViewModel(diceRollerFragment: DiceRollerFragment,
                          clazz: Class<DiceRollerViewModel>,
                          factory: ViewModelProvider.Factory): DiceRollerViewModel {
@@ -39,15 +39,15 @@ class DiceRollerUIModule(private val diceRollerFragment: DiceRollerFragment,
     }
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Fragment
     fun providePresenter(presenter: DiceRollerPresenter): BasePresenter = presenter
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Fragment
     fun provideBackPressureStrategy(): BackpressureStrategy = BackpressureStrategy.LATEST
 
     @Provides
-    @Scopes.Feature
+    @Scopes.Fragment
     fun provideContext(): Context = context
 
 }

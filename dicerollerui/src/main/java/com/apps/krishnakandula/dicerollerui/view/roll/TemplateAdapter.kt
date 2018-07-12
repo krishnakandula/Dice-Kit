@@ -12,7 +12,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import kotlinx.android.synthetic.main.template_item.view.*
 import javax.inject.Inject
 
-@Scopes.Feature
+@Scopes.Fragment
 class TemplateAdapter @Inject constructor(private val context: Context)
     : RecyclerView.Adapter<TemplateAdapter.TemplateViewHolder>() {
 
