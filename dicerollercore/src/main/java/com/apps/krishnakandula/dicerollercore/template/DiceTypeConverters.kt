@@ -6,13 +6,20 @@ import com.apps.krishnakandula.dicerollercore.Dice
 class DiceTypeConverters {
 
     @TypeConverter
-    fun fromString(str: String): Array<Dice> = str.split(" ")
+    fun fromRolls(rolls: Array<Array<Dice>>): String = rolls.map { fromRoll(it) }.joinToString("|")
+
+    @TypeConverter
+    fun fromString(str: String): Array<Array<Dice>> = str.split("|")
+                .filter { it.isNotBlank() }
+                .map { rollFromStr(it) }
+                .toTypedArray()
+
+    private fun rollFromStr(str: String): Array<Dice> = str.split(" ")
             .filter { it.isNotEmpty() }
             .map { fromChar(it)!! }
             .toTypedArray()
 
-    @TypeConverter
-    fun toString(dice: Array<Dice>): String = dice.map { fromDice(it) }.joinToString(" ")
+    private fun fromRoll(roll: Array<Dice>): String = roll.map { fromDie(it) }.joinToString(" ")
 
     private fun fromChar(str: String): Dice? {
         return when (str) {
@@ -26,7 +33,7 @@ class DiceTypeConverters {
         }
     }
 
-    private fun fromDice(die: Dice): String {
+    private fun fromDie(die: Dice): String {
         return when (die) {
             is Dice.D2 -> "2"
             is Dice.D4 -> "4"

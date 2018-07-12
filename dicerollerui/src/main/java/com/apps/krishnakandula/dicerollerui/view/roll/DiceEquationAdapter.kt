@@ -12,7 +12,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import kotlinx.android.synthetic.main.dice_stack_itemview.view.*
 import javax.inject.Inject
 
-@Scopes.Feature
+@Scopes.Fragment
 class DiceEquationAdapter @Inject constructor(private val context: Context)
     : RecyclerView.Adapter<DiceEquationAdapter.DiceEquationViewHolder>() {
 

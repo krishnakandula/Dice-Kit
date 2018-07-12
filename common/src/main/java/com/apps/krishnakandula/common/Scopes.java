@@ -6,7 +6,7 @@ public interface Scopes {
 
     @Scope @interface Application {}
 
-    @Scope @interface Feature {}
+    @Scope @interface Fragment {}
 
     @Scope @interface Dialog {}
 }

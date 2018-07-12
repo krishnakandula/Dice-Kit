@@ -92,9 +92,15 @@ class DiceRollerFragment : Fragment(),
         dice_pad_d10_btn.setOnClickListener { diceBtnClickRelay.accept(Dice.D10()) }
         dice_pad_d20_btn.setOnClickListener { diceBtnClickRelay.accept(Dice.D20()) }
         dice_pad_save_btn.setOnClickListener {
-            var dialogFragment = childFragmentManager.findFragmentByTag(SAVE_TEMPLATE_DIALOG_FRAGMENT_TAG)
-            if (dialogFragment == null) dialogFragment = SaveTemplateDialogFragment()
-            if (!dialogFragment.isAdded) (dialogFragment as SaveTemplateDialogFragment).show(childFragmentManager, SAVE_TEMPLATE_DIALOG_FRAGMENT_TAG)
+            if (viewModel.diceInEquation.value.isNotEmpty()) {
+                var dialogFragment = childFragmentManager.findFragmentByTag(SAVE_TEMPLATE_DIALOG_FRAGMENT_TAG)
+                if (dialogFragment == null) {
+                    dialogFragment = SaveTemplateDialogFragment.init(SaveTemplateDialogFragment.Rolls(viewModel.diceInEquation.value))
+                }
+                if (!dialogFragment.isAdded) {
+                    (dialogFragment as SaveTemplateDialogFragment).show(childFragmentManager, SAVE_TEMPLATE_DIALOG_FRAGMENT_TAG)
+                }
+            }
         }
         dice_pad_eq_btn.setOnClickListener { equalsBtnClickRelay.accept(viewModel.diceInEquation.value) }
         dice_pad_delete_btn.setOnClickListener { deleteBtnClickRelay.accept(Unit) }
