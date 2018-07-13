@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollerui.R
+import kotlinx.android.synthetic.main.dice_stack_itemview.view.*
 import kotlinx.android.synthetic.main.previous_rolls_dice_itemview.view.*
 
 class PreviousRollsResultAdapter(private val context: Context)

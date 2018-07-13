@@ -7,35 +7,11 @@
     android:minHeight="@dimen/dice_result_item_height"
     android:minWidth="@dimen/dice_result_item_width">
 
-    <com.yuyakaido.android.cardstackview.CardStackView
-        android:id="@+id/dice_roll_stack_itemview_card_stack_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        app:elevationEnabled="true"
+    <include layout="@layout/dice_stack_itemview"
+        android:id="@+id/dice_stack_itemview"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/dice_roll_stack_itemview_total_text_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:scaleDiff="0.1"
-        app:stackFrom="bottom"
-        app:swipeEnabled="false"
-        app:translationDiff="6"
-        app:visibleCount="3" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/dice_roll_stack_itemview_count_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/shape_circle"
-        android:gravity="center"
-        android:text="1"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/dice_roll_stack_itemview_total_text_view"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/dice_roll_stack_itemview_total_text_view"
@@ -47,6 +23,6 @@
         android:textColor="@color/accent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/dice_roll_stack_itemview_card_stack_view"
+        app:layout_constraintStart_toEndOf="@id/dice_stack_itemview"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
