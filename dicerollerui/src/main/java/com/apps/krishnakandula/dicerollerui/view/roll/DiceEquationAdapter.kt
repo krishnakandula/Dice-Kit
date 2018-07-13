@@ -37,9 +37,9 @@ class DiceEquationAdapter @Inject constructor(private val context: Context)
     inner class DiceEquationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(dice: List<Dice>) {
-            val adapter = DiceEquationStackAdapter(context) { itemView.dice_stack_itemview_card_stack_view.reverse() }
-            itemView.dice_stack_itemview_card_stack_view.setAdapter(adapter)
-            itemView.dice_stack_itemview_count_text_view.text = "${dice.size}"
+            val adapter = DiceEquationStackAdapter(context)
+            itemView.dice_roll_stack_itemview_card_stack_view.setAdapter(adapter)
+            itemView.dice_roll_stack_itemview_count_text_view.text = "${dice.size}"
             adapter.setData(dice)
         }
     }

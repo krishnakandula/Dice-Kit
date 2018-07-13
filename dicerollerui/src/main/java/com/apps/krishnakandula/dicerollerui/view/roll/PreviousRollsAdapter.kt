@@ -2,6 +2,7 @@ package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.content.Context
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -41,13 +42,13 @@ class PreviousRollsAdapter @Inject constructor(private val context: Context)
     inner class PreviousRollsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(result: DiceRollResult) {
-            val adapter = DiceEquationAdapter(context)
+            val adapter = PreviousRollsResultAdapter(context)
             itemView.previous_rolls_itemview_recycler_view.adapter = adapter
             itemView.previous_rolls_itemview_recycler_view.layoutManager = LinearLayoutManager(context,
                     LinearLayoutManager.HORIZONTAL,
                     false)
-            // TODO: Fix adapter
-//            adapter.setData(result.dice.map {  })
+            itemView.previous_rolls_itemview_recycler_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            adapter.setData(result.dice)
             itemView.previous_rolls_itemview_result_text_view.text = "${result.result}"
         }
     }
