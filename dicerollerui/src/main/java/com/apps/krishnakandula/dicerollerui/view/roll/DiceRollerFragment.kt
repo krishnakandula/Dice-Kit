@@ -2,6 +2,7 @@ package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -73,6 +74,8 @@ class DiceRollerFragment : Fragment(),
 
         dice_pad_template_recyclerview.adapter = templatesAdapter
         dice_pad_template_recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        fragment_dice_roller_history_recycler_view.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
         setupActions()
         setupListeners()

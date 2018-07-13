@@ -9,7 +9,7 @@
     android:minHeight="@dimen/dice_result_item_height"
     android:minWidth="@dimen/dice_result_item_width"
     app:cardCornerRadius="4dp"
-    app:cardBackgroundColor="@color/cardview_light_background"
+    app:cardBackgroundColor="@color/white"
     app:cardElevation="6dp">
 
     <LinearLayout
@@ -17,7 +17,6 @@
         android:layout_height="match_parent"
         android:minHeight="@dimen/dice_result_item_height"
         android:minWidth="@dimen/dice_result_item_width"
-        android:background="@drawable/item_border"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="horizontal">
@@ -30,9 +29,9 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:gravity="center"
-            android:textColor="@color/teal"
+            android:textColor="@color/royal_purple"
             android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
             tools:text="D4" />
 
