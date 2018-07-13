@@ -2,4 +2,5 @@
 <resources>
     <dimen name="dice_result_item_height">48dp</dimen>
     <dimen name="dice_result_item_width">96dp</dimen>
+    <dimen name="equation_edit_min_height">72dp</dimen>
 </resources>

@@ -42,7 +42,7 @@
         android:id="@+id/fragment_dice_roller_equation_edit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/dice_result_item_height"
+        android:minHeight="@dimen/equation_edit_min_height"
         app:cardElevation="4dp"
         app:cardBackgroundColor="@color/light_gray"
         app:layout_constraintBottom_toTopOf="@+id/fragment_dice_roller_dice_pad"
@@ -56,6 +56,7 @@
             android:id="@+id/fragment_dice_roller_equation_edit_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listitem="@layout/dice_item"
             tools:orientation="horizontal" />
