@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.apps.krishnakandula.dicerollerui.view.DiceRollerDragLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/child0"
+        android:background="@color/royal_purple"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="200dp"
+            android:text="Dice pad"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/child1"
+        android:background="@color/teal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:text="EquationEdit"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/child2"
+        android:background="@color/red"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Previous Rolls"/>
+    </FrameLayout>
+
+</com.apps.krishnakandula.dicerollerui.view.DiceRollerDragLayout>
