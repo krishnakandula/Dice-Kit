@@ -14,16 +14,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        var fragment = supportFragmentManager.findFragmentByTag(DICE_ROLLER_FRAGMENT_TAG)
-//        if (fragment == null) fragment = DiceRollerFragment()
-//        if (!fragment.isAdded) {
-//            supportFragmentManager.beginTransaction()
-//                    .add(R.id.fragment_container, fragment, DICE_ROLLER_FRAGMENT_TAG)
-//                    .commit()
-//        }
+        var fragment = supportFragmentManager.findFragmentByTag(DICE_ROLLER_FRAGMENT_TAG)
+        if (fragment == null) fragment = DiceRollerFragment()
+        if (!fragment.isAdded) {
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, fragment, DICE_ROLLER_FRAGMENT_TAG)
+                    .commit()
+        }
 
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, TestFragment())
-                .commit()
+//        supportFragmentManager.beginTransaction()
+//                .replace(R.id.fragment_container, TestFragment())
+//                .commit()
     }
 }
