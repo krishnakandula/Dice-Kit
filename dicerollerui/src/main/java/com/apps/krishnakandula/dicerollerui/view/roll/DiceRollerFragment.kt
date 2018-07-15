@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.apps.krishnakandula.common.OnBackPressedListener
 import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
@@ -18,14 +19,14 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
-import kotlinx.android.synthetic.main.dice_pad.*
 import kotlinx.android.synthetic.main.fragment_dice_roller.*
 import javax.inject.Inject
 
 class DiceRollerFragment : Fragment(),
         DiceRollerView,
         DiceRollerView.UserActions,
-        DiceRollerUIComponentProvider {
+        DiceRollerUIComponentProvider,
+        OnBackPressedListener {
 
     @Inject lateinit var presenter: BasePresenter
     @Inject lateinit var viewModel: DiceRollerViewModel
@@ -70,7 +71,7 @@ class DiceRollerFragment : Fragment(),
         fragment_dice_roller_history_recycler_view.adapter = previousRollsAdapter
         fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL,
-                false)
+                true)
 
         dice_pad_template_recyclerview.adapter = templatesAdapter
         dice_pad_template_recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -136,4 +137,9 @@ class DiceRollerFragment : Fragment(),
 
     override fun diceRollerUIComponent(): DiceRollerUIComponent = diceRollerUIComponent
 
+    override fun onBackPressed(superOnBackPressed: () -> Unit) {
+        if (fragment_dice_roller_drag_layout.isDown) {
+            fragment_dice_roller_drag_layout.resetPreviousRollsView()
+        } else superOnBackPressed()
+    }
 }

@@ -1,10 +1,10 @@
 package com.apps.krishnakandula.dicerollerui.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +16,13 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     private lateinit var dragHelper: ViewDragHelper
     private lateinit var previousRollsView: View
     private var initialPreviousRollsOffset = 0
+    private var initialPreviousRollsLeft = 0
+    private var previousScrollEvent: MotionEvent? = null
+    var isDown = false
+
+    companion object {
+        private val LOG_TAG = DiceRollerDragLayout::class.java.simpleName
+    }
 
     override fun onFinishInflate() {
         dragHelper = ViewDragHelper.create(this, 1.0f, DragHelperCallback())
@@ -24,15 +31,12 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
         val totalHeight = MeasureSpec.getSize(heightMeasureSpec)
         val totalWidth = MeasureSpec.getSize(widthMeasureSpec)
 
         val previousRollsChild = getChildAt(2)
         val equationEditChild = getChildAt(1)
         val dicePadChild = getChildAt(0)
-
 
         val equationEditHeightPercentage = 0.2
         val dicePadHeightPercentage = 0.4
@@ -41,14 +45,15 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
         val equationEditChildHeight = (totalHeight * equationEditHeightPercentage).roundToInt()
         val dicePadChildHeight = (totalHeight * dicePadHeightPercentage).roundToInt()
         previousRollsChild.measure(
-                MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.AT_MOST),
+                MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(previousRollsChildHeight, MeasureSpec.EXACTLY))
         equationEditChild.measure(
-                MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.AT_MOST),
+                MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(equationEditChildHeight, MeasureSpec.AT_MOST))
         dicePadChild.measure(
-                MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.AT_MOST),
-                MeasureSpec.makeMeasureSpec(dicePadChildHeight, MeasureSpec.AT_MOST))
+                MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(dicePadChildHeight, MeasureSpec.EXACTLY))
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -83,16 +88,29 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
             right - prevRollsChild.paddingEnd
         }
         initialPreviousRollsOffset = childTop
+        initialPreviousRollsLeft = childLeft
         prevRollsChild.layout(childLeft, childTop, childRight, currentBottom)
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        return if (ev != null) dragHelper.shouldInterceptTouchEvent(ev) else false
+        if (ev != null) {
+            if (ev.action == MotionEvent.ACTION_DOWN) {
+                // Save event as prev
+                previousScrollEvent = ev
+            }
+            if (ev.action == MotionEvent.ACTION_UP && previousScrollEvent != null) {
+                if (ev.y > previousScrollEvent!!.y && !isDown || ev.y < previousScrollEvent!!.y && isDown) {
+                    onTouchEvent(ev)
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        event?.let {
-            dragHelper.processTouchEvent(it)
+        event?.run {
+            dragHelper.processTouchEvent(this)
             return true
         }
         return false
@@ -103,9 +121,20 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
         if (dragHelper.continueSettling(true)) ViewCompat.postInvalidateOnAnimation(this)
     }
 
+    fun resetPreviousRollsView() {
+        dragHelper.smoothSlideViewTo(
+                previousRollsView,
+                initialPreviousRollsLeft,
+                initialPreviousRollsOffset)
+        isDown = false
+        invalidate()
+    }
+
     inner class DragHelperCallback : ViewDragHelper.Callback() {
 
-        override fun tryCaptureView(child: View, pointerId: Int): Boolean = child == previousRollsView
+        override fun tryCaptureView(child: View, pointerId: Int): Boolean {
+            return child == previousRollsView
+        }
 
         override fun getViewVerticalDragRange(child: View): Int {
             return (child.parent as View).measuredHeight - child.measuredHeight
@@ -117,13 +146,16 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
 
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
             super.onViewReleased(releasedChild, xvel, yvel)
-            val parent = releasedChild.parent as View
             if (yvel > 0) {
                 dragHelper.settleCapturedViewAt(releasedChild.left, 0)
+                isDown = true
             } else {
                 dragHelper.settleCapturedViewAt(releasedChild.left, initialPreviousRollsOffset)
+                isDown = false
             }
             invalidate()
         }
+
+
     }
 }

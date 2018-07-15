@@ -33,6 +33,8 @@ dependencies {
     // Modules
     implementation project(':dicerollercore')
     implementation project(':dicerollerui')
+    implementation project(':common')
+
     // Dagger
     implementation "$dagger"
     kapt "$daggerKapt"
