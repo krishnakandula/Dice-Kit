@@ -139,8 +139,6 @@ class DiceRollerFragment : Fragment(),
     override fun diceRollerUIComponent(): DiceRollerUIComponent = diceRollerUIComponent
 
     override fun onBackPressed(superOnBackPressed: () -> Unit) {
-        if (fragment_dice_roller_drag_layout.isDown) {
-            fragment_dice_roller_drag_layout.resetPreviousRollsView()
-        } else superOnBackPressed()
+        fragment_dice_roller_drag_layout.onBackPressed(superOnBackPressed)
     }
 }

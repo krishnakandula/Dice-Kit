@@ -1,6 +1,9 @@
 package com.apps.krishnakandula.dicerollerui.view
 
 import android.content.Context
+import android.os.Handler
+import android.os.Parcel
+import android.os.Parcelable
 import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper
 import android.support.v7.widget.LinearLayoutManager
@@ -9,12 +12,15 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import com.apps.krishnakandula.dicerollerui.R
+import com.apps.krishnakandula.dicerollerui.util.isLastItemCompletelyVisible
+import com.apps.krishnakandula.dicerollerui.util.scrollToBeginning
 import kotlin.math.roundToInt
 
 class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(context, attrs) {
 
     private lateinit var dragHelper: ViewDragHelper
     private lateinit var previousRollsView: View
+    private lateinit var previousRollsRecyclerView: RecyclerView
     private var previousRollsViewLayoutManager: LinearLayoutManager? = null
     private var initialPreviousRollsOffset = 0
     private var initialPreviousRollsLeft = 0
@@ -27,6 +33,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     override fun onFinishInflate() {
         dragHelper = ViewDragHelper.create(this, 1.0f, DragHelperCallback())
         previousRollsView = findViewById(R.id.fragment_dice_roller_history_card_view)
+        previousRollsRecyclerView = findViewById(R.id.fragment_dice_roller_history_recycler_view)
         super.onFinishInflate()
     }
 
@@ -97,18 +104,10 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
             // Check if touch event was in previous rolls view
             if (dragHelper.shouldInterceptTouchEvent(ev)) {
                 if (ev.action == MotionEvent.ACTION_MOVE && ev.historySize > 0) {
-                    if (previousRollsViewLayoutManager == null) {
-                        previousRollsViewLayoutManager = previousRollsView
-                                .findViewById<RecyclerView>(R.id.fragment_dice_roller_history_recycler_view)
-                                .layoutManager as LinearLayoutManager
-                    }
-
                     val deltaY = ev.y - ev.getHistoricalY(0)
                     val deltaX = ev.x - ev.getHistoricalX(0)
-                    val lastVisibleRoll =  previousRollsViewLayoutManager!!.findLastCompletelyVisibleItemPosition()
-                    val rollItemCount = previousRollsViewLayoutManager!!.itemCount
-                    val recyclerViewScrolledToBottom = rollItemCount == 0 || lastVisibleRoll == rollItemCount - 1
-                    if (Math.abs(deltaY) > Math.abs(deltaX) && recyclerViewScrolledToBottom) {
+                    if (Math.abs(deltaY) > Math.abs(deltaX)
+                            && getPrevRollsViewLayoutManager().isLastItemCompletelyVisible()) {
                         return (isDown && deltaY < 0) || (!isDown && deltaY > 0)
                     }
 
@@ -130,13 +129,86 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
         if (dragHelper.continueSettling(true)) ViewCompat.postInvalidateOnAnimation(this)
     }
 
-    fun resetPreviousRollsView() {
+
+    override fun onSaveInstanceState(): Parcelable {
+        val savedState = SavedState(super.onSaveInstanceState())
+        savedState.isDown = isDown
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state is SavedState) {
+            super.onRestoreInstanceState(state.superState)
+            isDown = state.isDown
+        } else super.onRestoreInstanceState(state)
+
+        if (isDown) scrollPreviousRollsViewDown()
+    }
+
+    private fun getPrevRollsViewLayoutManager(): LinearLayoutManager {
+        if (this.previousRollsViewLayoutManager == null) {
+            previousRollsViewLayoutManager = previousRollsRecyclerView.layoutManager as LinearLayoutManager
+        }
+        return previousRollsViewLayoutManager!!
+    }
+
+    fun onBackPressed(superOnBackPressed: () -> Unit) {
+        if (isDown) {
+            if (getPrevRollsViewLayoutManager().isLastItemCompletelyVisible()) {
+                scrollPreviousRollsViewUp()
+            } else {
+                Handler().postDelayed({
+                    getPrevRollsViewLayoutManager().scrollToBeginning()
+                }, 200)
+            }
+        } else superOnBackPressed()
+    }
+
+    private fun scrollPreviousRollsViewDown() {
+        dragHelper.smoothSlideViewTo(
+                previousRollsView,
+                initialPreviousRollsLeft,
+                1) // For some reason, having 0 here causes nothing to happen
+        invalidate()
+        isDown = true
+    }
+
+    private fun scrollPreviousRollsViewUp() {
         dragHelper.smoothSlideViewTo(
                 previousRollsView,
                 initialPreviousRollsLeft,
                 initialPreviousRollsOffset)
         isDown = false
         invalidate()
+    }
+
+    internal class SavedState : BaseSavedState {
+
+        var isDown: Boolean = false
+
+        constructor(source: Parcel) : super(source) {
+            isDown = source.readByte().toInt() == 1
+        }
+
+        constructor(superState: Parcelable) : super(superState)
+
+        override fun writeToParcel(out: Parcel?, flags: Int) {
+            super.writeToParcel(out, flags)
+            out?.writeByte((if (isDown) 1 else 0).toByte())
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
+                }
+
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
+            }
+        }
     }
 
     inner class DragHelperCallback : ViewDragHelper.Callback() {
