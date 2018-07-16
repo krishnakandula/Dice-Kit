@@ -18,9 +18,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     private var previousRollsViewLayoutManager: LinearLayoutManager? = null
     private var initialPreviousRollsOffset = 0
     private var initialPreviousRollsLeft = 0
-    private var prevMotionEvent: MotionEvent? = null
-    private var touchSlop: Int = 0
-    var isDown = false
+    private var isDown = false
 
     companion object {
         private val LOG_TAG = DiceRollerDragLayout::class.java.simpleName
@@ -29,7 +27,6 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     override fun onFinishInflate() {
         dragHelper = ViewDragHelper.create(this, 1.0f, DragHelperCallback())
         previousRollsView = findViewById(R.id.fragment_dice_roller_history_card_view)
-        touchSlop = ViewConfiguration.get(context).scaledTouchSlop
         super.onFinishInflate()
     }
 
@@ -97,13 +94,15 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         if (ev != null) {
+            // Check if touch event was in previous rolls view
             if (dragHelper.shouldInterceptTouchEvent(ev)) {
-                if (previousRollsViewLayoutManager == null) {
-                    previousRollsViewLayoutManager = previousRollsView
-                            .findViewById<RecyclerView>(R.id.fragment_dice_roller_history_recycler_view)
-                            .layoutManager as LinearLayoutManager
-                }
                 if (ev.action == MotionEvent.ACTION_MOVE && ev.historySize > 0) {
+                    if (previousRollsViewLayoutManager == null) {
+                        previousRollsViewLayoutManager = previousRollsView
+                                .findViewById<RecyclerView>(R.id.fragment_dice_roller_history_recycler_view)
+                                .layoutManager as LinearLayoutManager
+                    }
+
                     val deltaY = ev.y - ev.getHistoricalY(0)
                     val deltaX = ev.x - ev.getHistoricalX(0)
                     val lastVisibleRoll =  previousRollsViewLayoutManager!!.findLastCompletelyVisibleItemPosition()
@@ -119,20 +118,8 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
         return false
     }
 
-    private fun isPrevRollsViewTarget(event: MotionEvent, prevRollsView: View): Boolean {
-        val previousRollsLocation = IntArray(2)
-        prevRollsView.getLocationOnScreen(previousRollsLocation)
-        val lowerLimit = previousRollsLocation[1]
-        val upperLimit = previousRollsLocation[1] + prevRollsView.measuredHeight
-        val y = event.rawY.roundToInt()
-
-//        Log.d(LOG_TAG, "y: $y   lowerLimit: $lowerLimit     upperLimit: $upperLimit")
-        return y in lowerLimit..upperLimit
-    }
-
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event == null) return super.onTouchEvent(event)
-//        Log.d(LOG_TAG, "Processing touch event")
         dragHelper.processTouchEvent(event)
         return true
 
@@ -170,12 +157,12 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
 
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
             super.onViewReleased(releasedChild, xvel, yvel)
-            if (yvel > 0) {
+            isDown = if (yvel > 0) {
                 dragHelper.settleCapturedViewAt(releasedChild.left, 0)
-                isDown = true
+                true
             } else {
                 dragHelper.settleCapturedViewAt(releasedChild.left, initialPreviousRollsOffset)
-                isDown = false
+                false
             }
             invalidate()
         }
