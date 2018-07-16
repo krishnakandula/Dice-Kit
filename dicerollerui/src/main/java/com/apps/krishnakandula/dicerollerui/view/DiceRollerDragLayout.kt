@@ -3,11 +3,11 @@ package com.apps.krishnakandula.dicerollerui.view
 import android.content.Context
 import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.apps.krishnakandula.dicerollerui.R
 import kotlin.math.roundToInt
 
@@ -17,7 +17,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     private lateinit var previousRollsView: View
     private var initialPreviousRollsOffset = 0
     private var initialPreviousRollsLeft = 0
-    private var previousScrollEvent: MotionEvent? = null
+    private val velocityTracker = VelocityTracker.obtain()
     var isDown = false
 
     companion object {
@@ -94,26 +94,52 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         if (ev != null) {
-            if (ev.action == MotionEvent.ACTION_DOWN) {
-                // Save event as prev
-                previousScrollEvent = ev
-            }
-            if (ev.action == MotionEvent.ACTION_UP && previousScrollEvent != null) {
-                if (ev.y > previousScrollEvent!!.y && !isDown || ev.y < previousScrollEvent!!.y && isDown) {
-                    onTouchEvent(ev)
-                    return true
-                }
-            }
+            val gestureDetector = GestureDetector(context, gestureListener)
+            val onEvent = gestureDetector.onTouchEvent(ev)
+            Log.d(LOG_TAG, "onEvent: $onEvent")
+            return onEvent
         }
         return false
     }
 
+    private val gestureListener: GestureDetector.OnGestureListener = object : GestureDetector.SimpleOnGestureListener() {
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+            // Check if velocity is vertical
+            if (Math.abs(distanceY) > Math.abs(distanceX)) {
+                // If layout manager is fully down, accept scroll event
+                val layoutManager = previousRollsView
+                        .findViewById<RecyclerView>(R.id.fragment_dice_roller_history_recycler_view)
+                        .layoutManager as LinearLayoutManager
+                val lastCompletelyVis = layoutManager.findLastCompletelyVisibleItemPosition()
+                if (layoutManager.findLastCompletelyVisibleItemPosition() <= 0) {
+//                    Log.d(LOG_TAG, "IsDown: $isDown     DistanceY: $distanceY   lastCompletelyVis: $lastCompletelyVis")
+                    return (isDown && distanceY > 0) || (!isDown && distanceY < 0)
+                }
+            }
+            return super.onScroll(e1, e2, distanceX, distanceY)
+        }
+    }
+
+    private fun isPrevRollsViewTarget(event: MotionEvent, prevRollsView: View): Boolean {
+        val previousRollsLocation = IntArray(2)
+        prevRollsView.getLocationOnScreen(previousRollsLocation)
+        val lowerLimit = previousRollsLocation[1]
+        val upperLimit = previousRollsLocation[1] + prevRollsView.measuredHeight
+        val y = event.rawY.roundToInt()
+
+        Log.d(LOG_TAG, "y: $y   lowerLimit: $lowerLimit     upperLimit: $upperLimit")
+        return y in lowerLimit..upperLimit
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         event?.run {
-            dragHelper.processTouchEvent(this)
-            return true
+            Log.d(LOG_TAG, "Processing touch event")
+            if (isPrevRollsViewTarget(this, previousRollsView)) {
+                dragHelper.processTouchEvent(this)
+                return true
+            }
         }
-        return false
+        return super.onTouchEvent(event)
     }
 
     override fun computeScroll() {
@@ -133,7 +159,8 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     inner class DragHelperCallback : ViewDragHelper.Callback() {
 
         override fun tryCaptureView(child: View, pointerId: Int): Boolean {
-            return child == previousRollsView
+            Log.v(LOG_TAG, "Child id: ${child.id}   history: ${R.id.fragment_dice_roller_history_recycler_view}")
+            return child.id == R.id.fragment_dice_roller_history_recycler_view
         }
 
         override fun getViewVerticalDragRange(child: View): Int {
