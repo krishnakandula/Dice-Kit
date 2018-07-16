@@ -72,6 +72,7 @@ class DiceRollerFragment : Fragment(),
         fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL,
                 false)
+        fragment_dice_roller_history_recycler_view.isNestedScrollingEnabled = false
         (fragment_dice_roller_history_recycler_view.layoutManager as LinearLayoutManager).stackFromEnd = true
 
         dice_pad_template_recyclerview.adapter = templatesAdapter

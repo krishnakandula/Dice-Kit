@@ -121,7 +121,6 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
         if (event == null) return super.onTouchEvent(event)
         dragHelper.processTouchEvent(event)
         return true
-
     }
 
     override fun computeScroll() {
@@ -157,9 +156,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
             if (getPrevRollsViewLayoutManager().isLastItemCompletelyVisible()) {
                 scrollPreviousRollsViewUp()
             } else {
-                Handler().postDelayed({
-                    getPrevRollsViewLayoutManager().scrollToBeginning()
-                }, 200)
+                getPrevRollsViewLayoutManager().scrollToBeginning()
             }
         } else superOnBackPressed()
     }
@@ -169,8 +166,8 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
                 previousRollsView,
                 initialPreviousRollsLeft,
                 1) // For some reason, having 0 here causes nothing to happen
-        invalidate()
         isDown = true
+        invalidate()
     }
 
     private fun scrollPreviousRollsViewUp() {

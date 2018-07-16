@@ -186,6 +186,7 @@
         android:id="@+id/fragment_dice_roller_history_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
         app:cardElevation="8dp">
 
         <android.support.v7.widget.RecyclerView

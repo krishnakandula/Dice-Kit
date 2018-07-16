@@ -9,5 +9,7 @@ fun LinearLayoutManager.isLastItemCompletelyVisible(): Boolean {
 }
 
 fun LinearLayoutManager.scrollToBeginning() {
-    scrollToPosition(itemCount - 1)
+    if (itemCount > 0) {
+        scrollToPosition(0)
+    }
 }
