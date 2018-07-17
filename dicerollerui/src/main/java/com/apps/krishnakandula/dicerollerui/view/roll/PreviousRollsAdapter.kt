@@ -16,16 +16,17 @@ import kotlinx.android.synthetic.main.previous_rolls_itemview.view.*
 import javax.inject.Inject
 
 @Scopes.Fragment
-class PreviousRollsAdapter @Inject constructor(private val context: Context)
+class PreviousRollsAdapter @Inject constructor(private val context: Context,
+                                               private val sharedViewPool: RecyclerView.RecycledViewPool)
     : RecyclerView.Adapter<PreviousRollsAdapter.PreviousRollsViewHolder>() {
 
-    private val previousRolls = BehaviorRelay.createDefault<List<DiceRollResult>>(emptyList())
+    private val previousRolls: MutableList<DiceRollResult> = emptyList<DiceRollResult>().toMutableList()
 
     fun setData(rolls: List<DiceRollResult>) {
-        val diffResult = DiffUtil.calculateDiff(PreviousRollsDiffCallback(previousRolls.value, rolls))
-        this.previousRolls.accept(rolls)
+        val diffResult = DiffUtil.calculateDiff(PreviousRollsDiffCallback(previousRolls, rolls))
         diffResult.dispatchUpdatesTo(this)
-        notifyDataSetChanged()
+        this.previousRolls.clear()
+        this.previousRolls.addAll(rolls)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreviousRollsViewHolder {
@@ -33,10 +34,10 @@ class PreviousRollsAdapter @Inject constructor(private val context: Context)
         return PreviousRollsViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = previousRolls.value.size
+    override fun getItemCount(): Int = previousRolls.size
 
     override fun onBindViewHolder(holder: PreviousRollsViewHolder, position: Int) {
-        if (position < itemCount) holder.bind(previousRolls.value[position])
+        if (position < itemCount) holder.bind(previousRolls[position])
     }
 
     inner class PreviousRollsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
