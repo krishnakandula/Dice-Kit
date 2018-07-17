@@ -14,4 +14,8 @@ sealed class Dice {
 
     class D20 : Dice()
 
+    override fun equals(other: Any?): Boolean {
+        if (other == null || other !is Dice) return false
+        return other::class.java == this::class.java
+    }
 }

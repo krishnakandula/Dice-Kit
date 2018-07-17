@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.dicerollercore.roller.DiceRollResult
 import com.apps.krishnakandula.dicerollerui.R
-import com.jakewharton.rxrelay2.BehaviorRelay
 import kotlinx.android.synthetic.main.previous_rolls_itemview.view.*
 import javax.inject.Inject
 
@@ -49,6 +48,8 @@ class PreviousRollsAdapter @Inject constructor(private val context: Context,
                     LinearLayoutManager.HORIZONTAL,
                     false)
             itemView.previous_rolls_itemview_recycler_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            itemView.previous_rolls_itemview_recycler_view.recycledViewPool = sharedViewPool
+
             adapter.setData(result.dice)
             itemView.previous_rolls_itemview_result_text_view.text = "${result.result}"
         }
