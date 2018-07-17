@@ -1,7 +1,6 @@
 package com.apps.krishnakandula.dicerollerui.view
 
 import android.content.Context
-import android.os.Handler
 import android.os.Parcel
 import android.os.Parcelable
 import android.support.v4.view.ViewCompat
@@ -46,7 +45,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
         val dicePadChild = getChildAt(0)
 
         val equationEditHeightPercentage = 0.2
-        val dicePadHeightPercentage = 0.4
+        val dicePadHeightPercentage = 0.5
 
         val previousRollsChildHeight = totalHeight
         val equationEditChildHeight = (totalHeight * equationEditHeightPercentage).roundToInt()

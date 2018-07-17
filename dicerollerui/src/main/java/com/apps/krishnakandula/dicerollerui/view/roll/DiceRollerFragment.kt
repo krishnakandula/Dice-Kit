@@ -19,6 +19,7 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.android.synthetic.main.dice_pad.*
 import kotlinx.android.synthetic.main.fragment_dice_roller.*
 import javax.inject.Inject
 
