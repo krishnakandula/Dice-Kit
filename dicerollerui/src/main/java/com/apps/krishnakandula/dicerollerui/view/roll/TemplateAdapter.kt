@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.template_item.view.*
 import javax.inject.Inject
 
 @Scopes.Fragment
-class TemplateAdapter @Inject constructor(private val context: Context)
+class TemplateAdapter @Inject constructor(private val context: Context,
+                                          private val templateInteractionsListener: TemplateInteractionsListener)
     : RecyclerView.Adapter<TemplateAdapter.TemplateViewHolder>() {
 
     private val templates = emptyList<Template>().toMutableList()
@@ -41,7 +42,19 @@ class TemplateAdapter @Inject constructor(private val context: Context)
 
         fun bind(template: Template) {
             itemView.template_item_template_name.text = template.name
+            itemView.setOnClickListener { templateInteractionsListener.onClickTemplate(template) }
+            itemView.setOnLongClickListener {
+                templateInteractionsListener.onLongClickTemplate(template)
+                true
+            }
         }
+    }
+
+    interface TemplateInteractionsListener {
+
+        fun onClickTemplate(template: Template)
+
+        fun onLongClickTemplate(template: Template)
     }
 
     internal class TemplateDiffCallback(private val oldTemplates: List<Template>,
