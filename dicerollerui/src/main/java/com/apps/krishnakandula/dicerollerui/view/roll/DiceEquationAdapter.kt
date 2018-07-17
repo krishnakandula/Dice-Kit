@@ -1,6 +1,7 @@
 package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.content.Context
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,6 @@ import android.view.ViewGroup
 import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollerui.R
-import com.jakewharton.rxrelay2.BehaviorRelay
 import kotlinx.android.synthetic.main.dice_stack_itemview.view.*
 import javax.inject.Inject
 
@@ -16,11 +16,13 @@ import javax.inject.Inject
 class DiceEquationAdapter @Inject constructor(private val context: Context)
     : RecyclerView.Adapter<DiceEquationAdapter.DiceEquationViewHolder>() {
 
-    private val dice = BehaviorRelay.createDefault<List<List<Dice>>>(emptyList())
+    private val roll: MutableList<List<Dice>> = emptyList<List<Dice>>().toMutableList()
 
-    fun setData(result: List<List<Dice>>) {
-        this.dice.accept(result)
-        notifyDataSetChanged()
+    fun setData(newRoll: List<List<Dice>>) {
+        val diffResult = DiffUtil.calculateDiff(DiceEquationDiffCallback(roll, newRoll))
+        diffResult.dispatchUpdatesTo(this)
+        roll.clear()
+        roll.addAll(newRoll)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiceEquationViewHolder {
@@ -28,10 +30,10 @@ class DiceEquationAdapter @Inject constructor(private val context: Context)
         return DiceEquationViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = dice.value.size
+    override fun getItemCount(): Int = roll.size
 
     override fun onBindViewHolder(holder: DiceEquationViewHolder, position: Int) {
-        if (position < itemCount) holder.bind(dice.value[position])
+        if (position < itemCount) holder.bind(roll[position])
     }
 
     inner class DiceEquationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

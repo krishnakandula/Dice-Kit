@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.apps.krishnakandula.common.OnBackPressedListener
 import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class DiceRollerFragment : Fragment(),
         DiceRollerView,
         DiceRollerView.UserActions,
-        DiceRollerUIComponentProvider {
+        DiceRollerUIComponentProvider,
+        OnBackPressedListener {
 
     @Inject lateinit var presenter: BasePresenter
     @Inject lateinit var viewModel: DiceRollerViewModel
@@ -71,6 +73,8 @@ class DiceRollerFragment : Fragment(),
         fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL,
                 false)
+        fragment_dice_roller_history_recycler_view.isNestedScrollingEnabled = false
+        (fragment_dice_roller_history_recycler_view.layoutManager as LinearLayoutManager).stackFromEnd = true
 
         dice_pad_template_recyclerview.adapter = templatesAdapter
         dice_pad_template_recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -136,4 +140,7 @@ class DiceRollerFragment : Fragment(),
 
     override fun diceRollerUIComponent(): DiceRollerUIComponent = diceRollerUIComponent
 
+    override fun onBackPressed(superOnBackPressed: () -> Unit) {
+        fragment_dice_roller_drag_layout.onBackPressed(superOnBackPressed)
+    }
 }

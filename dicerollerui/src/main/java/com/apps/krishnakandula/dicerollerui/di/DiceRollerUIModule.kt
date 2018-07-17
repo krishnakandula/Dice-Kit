@@ -3,6 +3,7 @@ package com.apps.krishnakandula.dicerollerui.di
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.support.v7.widget.RecyclerView
 import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.dicerollerui.view.roll.*
@@ -49,5 +50,9 @@ class DiceRollerUIModule(private val diceRollerFragment: DiceRollerFragment,
     @Provides
     @Scopes.Fragment
     fun provideContext(): Context = context
+
+    @Provides
+    @Scopes.Fragment
+    fun provideDiceRollerHistorySharedItemView(): RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool()
 
 }

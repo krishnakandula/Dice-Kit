@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 interface BasePresenter {
 
     companion object {
-        const val DEFAULT_ACTIONS_TIMEOUT: Long = 50
+        const val DEFAULT_ACTIONS_TIMEOUT: Long = 10
         val DEFAULT_TIME_UNIT = TimeUnit.MILLISECONDS
     }
 
