@@ -1,12 +1,14 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 27
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 28
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -20,14 +22,55 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
 
+androidExtensions {
+    experimental=true
+}
+
+ext {
+    cardStackViewVersion = '1.0.0-beta9'
+    cardStackView = "com.yuyakaido.android:card-stack-view:${cardStackViewVersion}"
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:support-v4:$supportLibVersion"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    // Modules
+    implementation project(':dicerollercore')
+    implementation project(':common')
+    // Rx
+    implementation "$rxKotlin"
+    implementation "$rxAndroid"
+    implementation "$rxRelay"
+    // Dagger
+    implementation "$dagger"
+    kapt "$daggerKapt"
+    kapt "$daggerCompiler"
+    // Arch
+    api "$viewModel"
+    kapt "$viewModelAnnotationProcessor"
+    // Design
+    implementation "$constraintLayout"
+    implementation "$recyclerViewSupportLib"
+    implementation "$designSupportLib"
+    implementation "$cardViewSupportLib"
+    // Kt Reflections
+    implementation "$ktReflections"
+    // Room
+    implementation "$room"
+    implementation "$roomRx"
+    kapt "$roomAnnotationProcessor"
+
+    // Card stack view
+    implementation "$cardStackView"
+
 }
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
