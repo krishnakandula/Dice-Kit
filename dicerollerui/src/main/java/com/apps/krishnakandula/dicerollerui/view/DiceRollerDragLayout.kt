@@ -45,7 +45,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
         val dicePadChild = getChildAt(0)
 
         val equationEditHeightPercentage = 0.2
-        val dicePadHeightPercentage = 0.5
+        val dicePadHeightPercentage = 0.45
 
         val previousRollsChildHeight = totalHeight
         val equationEditChildHeight = (totalHeight * equationEditHeightPercentage).roundToInt()
@@ -209,18 +209,16 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
 
     inner class DragHelperCallback : ViewDragHelper.Callback() {
 
-        override fun tryCaptureView(child: View, pointerId: Int): Boolean {
-            val isPreviousView = child == previousRollsView
-            Log.d(LOG_TAG, "isPreviousView: $isPreviousView")
-            return child == previousRollsView
-        }
+        override fun tryCaptureView(child: View, pointerId: Int): Boolean = child == previousRollsView
 
         override fun getViewVerticalDragRange(child: View): Int {
             return child.measuredHeight
         }
 
         override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
-            return top
+            return if (dy > 0) {
+                Math.min(getTop(), top)
+            } else Math.max(initialPreviousRollsOffset, top)
         }
 
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
