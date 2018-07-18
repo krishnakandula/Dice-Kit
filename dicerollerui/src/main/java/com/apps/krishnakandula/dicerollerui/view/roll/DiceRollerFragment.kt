@@ -11,6 +11,7 @@ import com.apps.krishnakandula.common.OnBackPressedListener
 import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
+import com.apps.krishnakandula.dicerollercore.template.Template
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.*
 import com.apps.krishnakandula.dicerollerui.view.savetemplate.SaveTemplateDialogFragment
@@ -41,7 +42,10 @@ class DiceRollerFragment : Fragment(),
 
     private val diceBtnClickRelay = PublishRelay.create<Dice>()
     private val deleteBtnClickRelay = PublishRelay.create<Unit>()
+    private val deleteBtnLongClickRelay = PublishRelay.create<Unit>()
     private val equalsBtnClickRelay = PublishRelay.create<List<List<Dice>>>()
+    private val templateClickRelay = PublishRelay.create<Template>()
+    private val templateLongClickRelay = PublishRelay.create<Template>()
 
     companion object {
         private val LOG_TAG = DiceRollerFragment::class.java.simpleName
@@ -54,6 +58,7 @@ class DiceRollerFragment : Fragment(),
         diceRollerUIComponent = DaggerDiceRollerUIComponent.builder()
                 .diceRollerComponent((activity!!.application as DiceRollerComponentProvider).diceRollerComponent())
                 .diceRollerUIModule(DiceRollerUIModule(this, this.requireContext()))
+                .templateInteractionsListener(templateInteractionsListener)
                 .build()
         diceRollerUIComponent.inject(this)
     }
@@ -111,6 +116,10 @@ class DiceRollerFragment : Fragment(),
         }
         dice_pad_eq_btn.setOnClickListener { equalsBtnClickRelay.accept(viewModel.diceInEquation.value) }
         dice_pad_delete_btn.setOnClickListener { deleteBtnClickRelay.accept(Unit) }
+        dice_pad_delete_btn.setOnLongClickListener {
+            deleteBtnLongClickRelay.accept(Unit)
+            true
+        }
     }
 
     override fun setupListeners() {
@@ -138,9 +147,25 @@ class DiceRollerFragment : Fragment(),
 
     override fun onClickDeleteBtn(): Flowable<Unit> = deleteBtnClickRelay.toFlowable(backPressureStrategy)
 
+    override fun onLongClickDeleteBtn(): Flowable<Unit> = deleteBtnLongClickRelay.toFlowable(backPressureStrategy)
+
+    override fun onClickTemplate(): Flowable<Template> = templateClickRelay.toFlowable(backPressureStrategy)
+
+    override fun onLongClickTemplate(): Flowable<Template> = templateLongClickRelay.toFlowable(backPressureStrategy)
+
     override fun diceRollerUIComponent(): DiceRollerUIComponent = diceRollerUIComponent
 
     override fun onBackPressed(superOnBackPressed: () -> Unit) {
         fragment_dice_roller_drag_layout.onBackPressed(superOnBackPressed)
+    }
+
+    private val templateInteractionsListener = object : TemplateAdapter.TemplateInteractionsListener {
+        override fun onClickTemplate(template: Template) {
+            templateClickRelay.accept(template)
+        }
+
+        override fun onLongClickTemplate(template: Template) {
+            templateLongClickRelay.accept(template)
+        }
     }
 }
