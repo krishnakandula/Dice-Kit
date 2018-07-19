@@ -125,28 +125,33 @@ class DiceRollerFragment : Fragment(),
     }
 
     override fun setupListeners() {
-        viewModel.diceInEquation.subscribeBy(onNext = {
-            diceEquationAdapter.setData(it)
-            // Scroll to end of dice equation
-            fragment_dice_roller_equation_edit_recycler_view.layoutManager.scrollToPosition(it.lastIndex)
-        })
+        viewModel.diceInEquation.subscribeBy {
+            diceEquationAdapter.setData(it) { lastIndex ->
+                if (lastIndex > 0) {
+                    fragment_dice_roller_equation_edit_recycler_view.smoothScrollToPosition(lastIndex)
+                }
+            }
+        }
 
-        viewModel.templates.subscribeBy(onNext = { templates ->
+        viewModel.templates.subscribeBy { templates ->
             if (templates.isEmpty()) dice_pad_template_recyclerview.visibility = View.GONE
             else {
                 dice_pad_template_recyclerview.visibility = View.VISIBLE
-                templatesAdapter.setData(templates)
-                // Scroll to end of templates
-                dice_pad_template_recyclerview.layoutManager.scrollToPosition(templates.lastIndex)
+                templatesAdapter.setData(templates) { lastIndex ->
+                    if (lastIndex >= 0) {
+                        dice_pad_template_recyclerview.smoothScrollToPosition(lastIndex)
+                    }
+                }
             }
-        })
+        }
 
-        viewModel.previousRolls.subscribeBy(onNext = {
-            previousRollsAdapter.setData(it)
-            if (previousRollsAdapter.itemCount > 0) {
-                fragment_dice_roller_history_recycler_view.smoothScrollToPosition(previousRollsAdapter.itemCount - 1)
+        viewModel.previousRolls.subscribeBy {
+            previousRollsAdapter.setData(it) { lastIndex ->
+                if (lastIndex >= 0) {
+                    fragment_dice_roller_history_recycler_view.smoothScrollToPosition(lastIndex)
+                }
             }
-        })
+        }
     }
 
     override fun onClickDiceBtn(): Flowable<Dice> = diceBtnClickRelay.toFlowable(backPressureStrategy)

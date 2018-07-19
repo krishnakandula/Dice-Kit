@@ -113,7 +113,7 @@ class SaveTemplateDialogFragment :
     }
 
     override fun setupListeners() {
-        viewModel.rolls.subscribeBy(onNext = { diceEquationAdapter.setData(it) })
+        viewModel.rolls.subscribeBy(onNext = { diceEquationAdapter.setData(it, { }) })
     }
 
     override fun onClickConfirmBtn(): Flowable<String> = confirmBtnClickRelay.toFlowable(backpressureStrategy)
