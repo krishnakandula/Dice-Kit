@@ -87,11 +87,6 @@ class DiceRollerPresenter @Inject constructor(private val userActions: DiceRolle
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(onNext = this::onTemplateClicked))
 
-        disposable.add(userActions.onLongClickTemplate()
-                .doOnNext { Log.v(LOG_TAG, "Template with name ${it.name} long clicked") }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(onNext = this::onTemplateLongClicked))
-
         disposable.add(userActions.onLongClickDeleteBtn()
                 .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Delete Btn long clicked") }
@@ -107,10 +102,6 @@ class DiceRollerPresenter @Inject constructor(private val userActions: DiceRolle
             diceInEquation.addAll(template.rolls.map { it.toList() })
             viewModel.diceInEquation.accept(diceInEquation)
         }
-    }
-
-    private fun onTemplateLongClicked(template: Template) {
-        // TODO: Add navigation to confirm delete template dialog
     }
 
     private fun onDeleteLongClicked(unit: Unit) {

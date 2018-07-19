@@ -9,4 +9,6 @@ interface TemplateRepository {
     fun addTemplate(template: Template)
 
     fun deleteTemplate(template: Template)
+
+    fun getTemplate(id: Long): Flowable<Template>
 }
