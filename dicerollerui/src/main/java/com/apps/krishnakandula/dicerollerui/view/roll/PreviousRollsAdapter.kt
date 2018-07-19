@@ -48,6 +48,7 @@ class PreviousRollsAdapter @Inject constructor(private val context: Context,
                     LinearLayoutManager.HORIZONTAL,
                     false)
             itemView.previous_rolls_itemview_recycler_view.recycledViewPool = sharedViewPool
+            itemView.previous_rolls_itemview_recycler_view.setItemViewCacheSize(15)
 
             adapter.setData(result.dice)
             itemView.previous_rolls_itemview_result_text_view.text = "${result.result}"
