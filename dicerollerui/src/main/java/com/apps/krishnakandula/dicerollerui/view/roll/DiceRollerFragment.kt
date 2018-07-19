@@ -124,13 +124,19 @@ class DiceRollerFragment : Fragment(),
     }
 
     override fun setupListeners() {
-        viewModel.diceInEquation.subscribeBy(onNext = { diceEquationAdapter.setData(it) })
+        viewModel.diceInEquation.subscribeBy(onNext = {
+            diceEquationAdapter.setData(it)
+            // Scroll to end of dice equation
+            fragment_dice_roller_equation_edit_recycler_view.layoutManager.scrollToPosition(it.lastIndex)
+        })
 
         viewModel.templates.subscribeBy(onNext = { templates ->
             if (templates.isEmpty()) dice_pad_template_recyclerview.visibility = View.GONE
             else {
                 dice_pad_template_recyclerview.visibility = View.VISIBLE
                 templatesAdapter.setData(templates)
+                // Scroll to end of templates
+                dice_pad_template_recyclerview.layoutManager.scrollToPosition(templates.lastIndex)
             }
         })
 

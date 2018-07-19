@@ -47,7 +47,6 @@ class PreviousRollsAdapter @Inject constructor(private val context: Context,
             itemView.previous_rolls_itemview_recycler_view.layoutManager = LinearLayoutManager(context,
                     LinearLayoutManager.HORIZONTAL,
                     false)
-            itemView.previous_rolls_itemview_recycler_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
             itemView.previous_rolls_itemview_recycler_view.recycledViewPool = sharedViewPool
 
             adapter.setData(result.dice)
