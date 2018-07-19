@@ -31,7 +31,7 @@
             android:layout_marginTop="4dp"
             android:textSize="22sp"
             android:gravity="center"
-            android:textColor="@color/royal_purple"
+            android:textColor="@color/purple"
             android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Borderless.Colored"
             tools:text="D4" />
 

@@ -53,6 +53,7 @@ class SaveTemplateDialogFragment :
     @Inject lateinit var viewModel: SaveTemplateDialogViewModel
     @Inject lateinit var backpressureStrategy: BackpressureStrategy
     @Inject lateinit var presenter: BasePresenter
+
     private val confirmBtnClickRelay = PublishRelay.create<String>()
     private val disposable: CompositeDisposable = CompositeDisposable()
 
@@ -82,16 +83,20 @@ class SaveTemplateDialogFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragment_save_template_recycler_view.adapter = diceEquationAdapter
-        fragment_save_template_recycler_view.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        fragment_save_template_recycler_view.layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false)
         setupListeners()
         setupActions()
-        disposable.add(presenter.bindActions())
-
+        disposable.addAll(
+                presenter.bindActions(),
+                viewModel.bindSources())
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         disposable.clear()
+        super.onDestroyView()
     }
 
     override fun onStart() {

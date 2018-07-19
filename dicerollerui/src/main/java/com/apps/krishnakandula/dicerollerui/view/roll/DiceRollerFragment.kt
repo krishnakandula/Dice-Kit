@@ -14,6 +14,7 @@ import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
 import com.apps.krishnakandula.dicerollercore.template.Template
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.*
+import com.apps.krishnakandula.dicerollerui.view.deletetemplate.DeleteTemplateDialogFragment
 import com.apps.krishnakandula.dicerollerui.view.savetemplate.SaveTemplateDialogFragment
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.BackpressureStrategy
@@ -45,11 +46,11 @@ class DiceRollerFragment : Fragment(),
     private val deleteBtnLongClickRelay = PublishRelay.create<Unit>()
     private val equalsBtnClickRelay = PublishRelay.create<List<List<Dice>>>()
     private val templateClickRelay = PublishRelay.create<Template>()
-    private val templateLongClickRelay = PublishRelay.create<Template>()
 
     companion object {
         private val LOG_TAG = DiceRollerFragment::class.java.simpleName
         private const val SAVE_TEMPLATE_DIALOG_FRAGMENT_TAG = "SAVE_TEMPLATE_DIALOG_FRAGMENT_TAG"
+        private const val DELETE_TEMPLATE_DIALOG_FRAGMENT_TAG = "DELETE_TEMPLATE_DIALOG_FRAGMENT_TAG"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,13 +124,19 @@ class DiceRollerFragment : Fragment(),
     }
 
     override fun setupListeners() {
-        viewModel.diceInEquation.subscribeBy(onNext = { diceEquationAdapter.setData(it) })
+        viewModel.diceInEquation.subscribeBy(onNext = {
+            diceEquationAdapter.setData(it)
+            // Scroll to end of dice equation
+            fragment_dice_roller_equation_edit_recycler_view.layoutManager.scrollToPosition(it.lastIndex)
+        })
 
         viewModel.templates.subscribeBy(onNext = { templates ->
             if (templates.isEmpty()) dice_pad_template_recyclerview.visibility = View.GONE
             else {
                 dice_pad_template_recyclerview.visibility = View.VISIBLE
                 templatesAdapter.setData(templates)
+                // Scroll to end of templates
+                dice_pad_template_recyclerview.layoutManager.scrollToPosition(templates.lastIndex)
             }
         })
 
@@ -151,8 +158,6 @@ class DiceRollerFragment : Fragment(),
 
     override fun onClickTemplate(): Flowable<Template> = templateClickRelay.toFlowable(backPressureStrategy)
 
-    override fun onLongClickTemplate(): Flowable<Template> = templateLongClickRelay.toFlowable(backPressureStrategy)
-
     override fun diceRollerUIComponent(): DiceRollerUIComponent = diceRollerUIComponent
 
     override fun onBackPressed(superOnBackPressed: () -> Unit) {
@@ -165,7 +170,13 @@ class DiceRollerFragment : Fragment(),
         }
 
         override fun onLongClickTemplate(template: Template) {
-            templateLongClickRelay.accept(template)
+            var dialogFragment = childFragmentManager.findFragmentByTag(DELETE_TEMPLATE_DIALOG_FRAGMENT_TAG)
+            if (dialogFragment == null) {
+                dialogFragment = DeleteTemplateDialogFragment.newInstance(template.id!!)
+            }
+            if (!dialogFragment.isAdded) {
+                (dialogFragment as DeleteTemplateDialogFragment).show(childFragmentManager, DELETE_TEMPLATE_DIALOG_FRAGMENT_TAG)
+            }
         }
     }
 }

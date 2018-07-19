@@ -21,6 +21,9 @@ interface RoomTemplateRepository : TemplateRepository {
     @Delete
     override fun deleteTemplate(template: Template)
 
+    @Query("SELECT * FROM ${TemplateSchema.TABLE_NAME} " +
+            "WHERE ${TemplateSchema.Cols.ID} = :id")
+    override fun getTemplate(id: Long): Flowable<Template>
 }
 
 
