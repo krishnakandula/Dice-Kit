@@ -58,7 +58,6 @@
             style="@style/DicePadNumberBtn"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:fontFamily="@font/vt323"
             android:text="D10"
             android:textAppearance="@android:style/TextAppearance.Small"
             app:layout_constraintBottom_toTopOf="@+id/dice_pad_template_recyclerview"

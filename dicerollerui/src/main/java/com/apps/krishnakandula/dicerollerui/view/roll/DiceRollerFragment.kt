@@ -13,6 +13,7 @@ import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollercore.DiceRollerComponentProvider
 import com.apps.krishnakandula.dicerollercore.template.Template
+import com.apps.krishnakandula.dicerollerui.LinearLayoutManagerWrapper
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.di.*
 import com.apps.krishnakandula.dicerollerui.view.deletetemplate.DeleteTemplateDialogFragment
@@ -73,11 +74,11 @@ class DiceRollerFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         fragment_dice_roller_equation_edit_recycler_view.adapter = diceEquationAdapter
-        equationEditLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        equationEditLayoutManager = LinearLayoutManagerWrapper(context, LinearLayoutManager.HORIZONTAL, false)
         fragment_dice_roller_equation_edit_recycler_view.layoutManager = equationEditLayoutManager
 
         fragment_dice_roller_history_recycler_view.adapter = previousRollsAdapter
-        fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManager(context,
+        fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManagerWrapper(context,
                 LinearLayoutManager.VERTICAL,
                 false)
         fragment_dice_roller_history_recycler_view.isNestedScrollingEnabled = false
@@ -85,7 +86,7 @@ class DiceRollerFragment : Fragment(),
         fragment_dice_roller_history_recycler_view.setItemViewCacheSize(40)
 
         dice_pad_template_recyclerview.adapter = templatesAdapter
-        dice_pad_template_recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        dice_pad_template_recyclerview.layoutManager = LinearLayoutManagerWrapper(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         fragment_dice_roller_history_recycler_view.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
