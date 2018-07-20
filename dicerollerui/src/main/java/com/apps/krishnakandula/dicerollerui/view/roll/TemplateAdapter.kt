@@ -10,6 +10,10 @@ import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.dicerollercore.template.Template
 import com.apps.krishnakandula.dicerollerui.R
 import com.jakewharton.rxrelay2.BehaviorRelay
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.template_item.view.*
 import javax.inject.Inject
 
@@ -20,12 +24,20 @@ class TemplateAdapter @Inject constructor(private val context: Context,
 
     private val templates = emptyList<Template>().toMutableList()
 
-    fun setData(data: List<Template>) {
-        val diffResult = DiffUtil.calculateDiff(TemplateDiffCallback(templates, data))
-        diffResult.dispatchUpdatesTo(this)
-        templates.clear()
-        templates.addAll(data)
+    fun setData(data: List<Template>,
+                scrollCallback: (lastIndex: Int) -> Unit) {
+        updateDataObservable(data)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = { diffResult ->
+                    diffResult.dispatchUpdatesTo(this)
+                    templates.clear()
+                    templates.addAll(data)
+                    scrollCallback(templates.lastIndex)
+                })
     }
+
+    private fun updateDataObservable(data: List<Template>) = Observable.just(DiffUtil.calculateDiff(TemplateDiffCallback(templates, data)))
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplateViewHolder {
         val itemView = LayoutInflater.from(context).inflate(R.layout.template_item, parent, false)

@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.dicerollercore.Dice
 import com.apps.krishnakandula.dicerollerui.R
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dice_stack_itemview.view.*
 import javax.inject.Inject
 
@@ -18,12 +22,20 @@ class DiceEquationAdapter @Inject constructor(private val context: Context)
 
     private val roll: MutableList<List<Dice>> = emptyList<List<Dice>>().toMutableList()
 
-    fun setData(newRoll: List<List<Dice>>) {
-        val diffResult = DiffUtil.calculateDiff(DiceEquationDiffCallback(roll, newRoll))
-        diffResult.dispatchUpdatesTo(this)
-        roll.clear()
-        roll.addAll(newRoll)
+    fun setData(newRoll: List<List<Dice>>,
+                scrollCallback: (lastIndex: Int) -> Unit) {
+        updateRollObservable(newRoll)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = { diffResult ->
+                    diffResult.dispatchUpdatesTo(this)
+                    roll.clear()
+                    roll.addAll(newRoll)
+                    scrollCallback(roll.lastIndex)
+                })
     }
+
+    private fun updateRollObservable(newRoll: List<List<Dice>>) = Observable.just(DiffUtil.calculateDiff(DiceEquationDiffCallback(roll, newRoll)))
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiceEquationViewHolder {
         val itemView = LayoutInflater.from(context).inflate(R.layout.dice_stack_itemview, parent, false)

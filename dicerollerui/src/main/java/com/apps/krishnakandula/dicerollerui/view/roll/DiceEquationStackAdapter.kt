@@ -1,6 +1,7 @@
 package com.apps.krishnakandula.dicerollerui.view.roll
 
 import android.content.Context
+import android.graphics.Color
 import android.opengl.Visibility
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -36,7 +37,8 @@ class DiceEquationStackAdapter(context: Context) : ArrayAdapter<Dice>(context, 0
             is Dice.D20 -> itemView?.dice_item_dice_type_textview?.text = "D20"
         }
         itemView?.dice_item_dice_roll_textview?.visibility = View.GONE
-        itemView?.dice_item_dice_type_textview?.setTextColor(dice.color(context))
+        itemView?.dice_item_card_view?.setCardBackgroundColor(dice.color(context))
+        itemView?.dice_item_dice_type_textview?.setTextColor(Color.WHITE)
         return itemView!!
     }
 

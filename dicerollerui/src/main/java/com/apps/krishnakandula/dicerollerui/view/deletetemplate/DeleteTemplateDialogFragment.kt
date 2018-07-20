@@ -106,7 +106,7 @@ class DeleteTemplateDialogFragment :
     override fun setupListeners() {
         viewModel.template.subscribeBy(onNext = {
             template_item_template_name.text = it.name
-            diceEquationAdapter.setData(it.rolls.map { it.toList() })
+            diceEquationAdapter.setData(it.rolls.map { it.toList() }, {})
         })
     }
 
