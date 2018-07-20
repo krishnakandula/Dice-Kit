@@ -28,9 +28,9 @@ class DiceEquationAdapter @Inject constructor(private val context: Context)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(onNext = { diffResult ->
-                    diffResult.dispatchUpdatesTo(this)
                     roll.clear()
                     roll.addAll(newRoll)
+                    diffResult.dispatchUpdatesTo(this)
                     scrollCallback(roll.lastIndex)
                 })
     }

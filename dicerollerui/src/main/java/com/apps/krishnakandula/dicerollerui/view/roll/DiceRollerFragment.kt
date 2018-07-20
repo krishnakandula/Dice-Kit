@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -125,13 +126,15 @@ class DiceRollerFragment : Fragment(),
     }
 
     override fun setupListeners() {
-        viewModel.diceInEquation.subscribeBy {
+        viewModel.diceInEquation.subscribeBy(onNext = {
             diceEquationAdapter.setData(it) { lastIndex ->
                 if (lastIndex > 0) {
-                    fragment_dice_roller_equation_edit_recycler_view.smoothScrollToPosition(lastIndex)
+                    fragment_dice_roller_equation_edit_recycler_view.layoutManager.scrollToPosition(lastIndex)
                 }
             }
-        }
+        }, onError = {
+            Log.e(LOG_TAG, "Could not add dice to dice equation", it)
+        })
 
         viewModel.templates.subscribeBy { templates ->
             if (templates.isEmpty()) dice_pad_template_recyclerview.visibility = View.GONE
@@ -139,7 +142,7 @@ class DiceRollerFragment : Fragment(),
                 dice_pad_template_recyclerview.visibility = View.VISIBLE
                 templatesAdapter.setData(templates) { lastIndex ->
                     if (lastIndex >= 0) {
-                        dice_pad_template_recyclerview.smoothScrollToPosition(lastIndex)
+                        dice_pad_template_recyclerview.layoutManager.scrollToPosition(lastIndex)
                     }
                 }
             }
@@ -148,7 +151,7 @@ class DiceRollerFragment : Fragment(),
         viewModel.previousRolls.subscribeBy {
             previousRollsAdapter.setData(it) { lastIndex ->
                 if (lastIndex >= 0) {
-                    fragment_dice_roller_history_recycler_view.smoothScrollToPosition(lastIndex)
+                    fragment_dice_roller_history_recycler_view.layoutManager.scrollToPosition(lastIndex)
                 }
             }
         }
