@@ -5,11 +5,11 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
+import com.apps.krishnakandula.dicerollerui.LinearLayoutManagerWrapper
 import com.apps.krishnakandula.dicerollerui.R
 import com.apps.krishnakandula.dicerollerui.util.isLastItemCompletelyVisible
 import com.apps.krishnakandula.dicerollerui.util.scrollToBeginning
@@ -20,7 +20,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     private lateinit var dragHelper: ViewDragHelper
     private lateinit var previousRollsView: View
     private lateinit var previousRollsRecyclerView: RecyclerView
-    private var previousRollsViewLayoutManager: LinearLayoutManager? = null
+    private var previousRollsViewLayoutManager: LinearLayoutManagerWrapper? = null
     private var initialPreviousRollsOffset = 0
     private var initialPreviousRollsLeft = 0
     private var isDown = false
@@ -137,15 +137,15 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is SavedState) {
             super.onRestoreInstanceState(state.superState)
-            isDown = state.isDown
+            setIsDown(state.isDown)
         } else super.onRestoreInstanceState(state)
 
-        if (isDown) scrollPreviousRollsViewDown()
+        if (isDown) scrollPreviousRollsViewDown() else getPrevRollsViewLayoutManager().disableVerticalScroll()
     }
 
-    private fun getPrevRollsViewLayoutManager(): LinearLayoutManager {
+    private fun getPrevRollsViewLayoutManager(): LinearLayoutManagerWrapper {
         if (this.previousRollsViewLayoutManager == null) {
-            previousRollsViewLayoutManager = previousRollsRecyclerView.layoutManager as LinearLayoutManager
+            previousRollsViewLayoutManager = previousRollsRecyclerView.layoutManager as LinearLayoutManagerWrapper
         }
         return previousRollsViewLayoutManager!!
     }
@@ -165,7 +165,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
                 previousRollsView,
                 initialPreviousRollsLeft,
                 1) // For some reason, having 0 here causes nothing to happen
-        isDown = true
+        setIsDown(true)
         invalidate()
     }
 
@@ -174,8 +174,17 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
                 previousRollsView,
                 initialPreviousRollsLeft,
                 initialPreviousRollsOffset)
-        isDown = false
+        setIsDown(false)
         invalidate()
+    }
+
+    private fun setIsDown(down: Boolean) {
+        isDown = down
+        if (isDown) {
+            getPrevRollsViewLayoutManager().enableVerticalScroll()
+        } else {
+            getPrevRollsViewLayoutManager().disableVerticalScroll()
+        }
     }
 
     internal class SavedState : BaseSavedState {
@@ -223,15 +232,14 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
 
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
             super.onViewReleased(releasedChild, xvel, yvel)
-            isDown = if (yvel > 0) {
+            setIsDown(if (yvel > 0) {
                 dragHelper.settleCapturedViewAt(releasedChild.left, 0)
                 true
             } else {
                 dragHelper.settleCapturedViewAt(releasedChild.left, initialPreviousRollsOffset)
                 false
-            }
+            })
             invalidate()
         }
-
     }
 }

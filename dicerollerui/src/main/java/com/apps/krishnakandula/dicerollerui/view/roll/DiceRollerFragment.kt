@@ -74,11 +74,11 @@ class DiceRollerFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         fragment_dice_roller_equation_edit_recycler_view.adapter = diceEquationAdapter
-        equationEditLayoutManager = LinearLayoutManagerWrapper(context, LinearLayoutManager.HORIZONTAL, false)
+        equationEditLayoutManager = LinearLayoutManagerWrapper(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         fragment_dice_roller_equation_edit_recycler_view.layoutManager = equationEditLayoutManager
 
         fragment_dice_roller_history_recycler_view.adapter = previousRollsAdapter
-        fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManagerWrapper(context,
+        fragment_dice_roller_history_recycler_view.layoutManager = LinearLayoutManagerWrapper(requireContext(),
                 LinearLayoutManager.VERTICAL,
                 false)
         fragment_dice_roller_history_recycler_view.isNestedScrollingEnabled = false
