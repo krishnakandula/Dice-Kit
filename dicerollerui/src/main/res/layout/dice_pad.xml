@@ -11,6 +11,32 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/dice_pad_plus_one_btn"
+            style="@style/DicePadNumberBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="+ 1"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@id/dice_pad_minus_one_btn"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight=".5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/dice_pad_minus_one_btn"
+            style="@style/DicePadNumberBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="- 1"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight=".5"
+            app:layout_constraintStart_toEndOf="@id/dice_pad_plus_one_btn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/dice_pad_d4_btn"
             style="@style/DicePadNumberBtn"
             android:layout_width="0dp"
@@ -21,7 +47,7 @@
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight=".4"
             app:layout_constraintStart_toEndOf="@+id/dice_pad_d2_btn"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dice_pad_plus_one_btn"
             app:layout_constraintVertical_chainStyle="spread_inside"
             app:layout_constraintVertical_weight=".33" />
 
@@ -36,7 +62,7 @@
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight=".4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dice_pad_plus_one_btn"
             app:layout_constraintVertical_chainStyle="spread_inside" />
 
         <Button
@@ -138,7 +164,7 @@
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight=".2"
             app:layout_constraintStart_toEndOf="@+id/dice_pad_d4_btn"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dice_pad_plus_one_btn"
             app:layout_constraintVertical_chainStyle="spread_inside" />
 
         <android.support.v7.widget.RecyclerView

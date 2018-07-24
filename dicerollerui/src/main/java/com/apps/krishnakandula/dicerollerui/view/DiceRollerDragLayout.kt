@@ -45,7 +45,7 @@ class DiceRollerDragLayout(context: Context, attrs: AttributeSet) : ViewGroup(co
         val dicePadChild = getChildAt(0)
 
         val equationEditHeightPercentage = 0.2
-        val dicePadHeightPercentage = 0.45
+        val dicePadHeightPercentage = 0.55
 
         val previousRollsChildHeight = totalHeight
         val equationEditChildHeight = (totalHeight * equationEditHeightPercentage).roundToInt()
