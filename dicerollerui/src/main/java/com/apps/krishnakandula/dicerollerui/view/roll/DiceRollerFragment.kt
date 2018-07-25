@@ -24,6 +24,8 @@ import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.dice_pad.*
+import kotlinx.android.synthetic.main.dice_roller_history.*
+import kotlinx.android.synthetic.main.equation_edit.*
 import kotlinx.android.synthetic.main.fragment_dice_roller.*
 import javax.inject.Inject
 
@@ -143,11 +145,11 @@ class DiceRollerFragment : Fragment(),
             if (templates.isEmpty()) dice_pad_template_recyclerview.visibility = View.GONE
             else {
                 dice_pad_template_recyclerview.visibility = View.VISIBLE
-                templatesAdapter.setData(templates) { lastIndex ->
+                templatesAdapter.setData(templates, scrollCallback =  { lastIndex ->
                     if (lastIndex >= 0) {
                         dice_pad_template_recyclerview.layoutManager.scrollToPosition(lastIndex)
                     }
-                }
+                })
             }
         }
 
