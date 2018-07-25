@@ -145,11 +145,11 @@ class DiceRollerFragment : Fragment(),
             if (templates.isEmpty()) dice_pad_template_recyclerview.visibility = View.GONE
             else {
                 dice_pad_template_recyclerview.visibility = View.VISIBLE
-                templatesAdapter.setData(templates) { lastIndex ->
+                templatesAdapter.setData(templates, scrollCallback =  { lastIndex ->
                     if (lastIndex >= 0) {
                         dice_pad_template_recyclerview.layoutManager.scrollToPosition(lastIndex)
                     }
-                }
+                })
             }
         }
 
