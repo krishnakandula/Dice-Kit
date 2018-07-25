@@ -15,7 +15,7 @@ fun Dice.color(context: Context): Int {
         is Dice.D10 -> context.getColor(R.color.orange)
         is Dice.D20 -> context.getColor(R.color.pink)
         is Dice.Plus1 -> context.getColor(R.color.light_blue)
-        is Dice.Minus1 -> context.getColor(R.color.light_red)
+        is Dice.Minus1 -> context.getColor(R.color.dark_green)
     }
 }
 
