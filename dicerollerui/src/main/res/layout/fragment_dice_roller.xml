@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.apps.krishnakandula.dicerollerui.view.DiceRollerDragLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_dice_roller_drag_layout"
     android:layout_width="match_parent"
@@ -9,37 +8,7 @@
     tools:context=".view.roll.DiceRollerFragment">
 
     <include layout="@layout/dice_pad"/>
+    <include layout="@layout/equation_edit"/>
+    <include layout="@layout/dice_roller_history"/>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/fragment_dice_roller_equation_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/equation_edit_min_height"
-        app:cardBackgroundColor="@color/light_gray"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_dice_roller_equation_edit_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/dice_item"
-            tools:orientation="horizontal" />
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/fragment_dice_roller_history_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="true"
-        app:cardElevation="8dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_dice_roller_history_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </android.support.v7.widget.CardView>
 </com.apps.krishnakandula.dicerollerui.view.DiceRollerDragLayout>
