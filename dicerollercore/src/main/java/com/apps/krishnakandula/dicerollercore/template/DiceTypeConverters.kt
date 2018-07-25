@@ -29,6 +29,8 @@ class DiceTypeConverters {
             "8" -> Dice.D8()
             "10" -> Dice.D10()
             "20" -> Dice.D20()
+            "+1" -> Dice.Plus1()
+            "-1" -> Dice.Minus1()
             else -> null
         }
     }
@@ -41,6 +43,8 @@ class DiceTypeConverters {
             is Dice.D8 -> "8"
             is Dice.D10 -> "10"
             is Dice.D20 -> "20"
+            is Dice.Plus1 -> "+1"
+            is Dice.Minus1 -> "-1"
         }
     }
 

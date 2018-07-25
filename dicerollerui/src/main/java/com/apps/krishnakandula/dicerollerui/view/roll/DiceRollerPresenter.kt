@@ -23,7 +23,6 @@ class DiceRollerPresenter @Inject constructor(private val userActions: DiceRolle
     override fun bindActions(): CompositeDisposable {
         val disposable = CompositeDisposable()
         disposable.add(userActions.onClickDiceBtn()
-                .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Dice Button pressed") }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(onNext = { die ->

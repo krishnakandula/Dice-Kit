@@ -124,6 +124,8 @@ class DiceRollerFragment : Fragment(),
             deleteBtnLongClickRelay.accept(Unit)
             true
         }
+        dice_pad_plus_one_btn.setOnClickListener { diceBtnClickRelay.accept(Dice.Plus1()) }
+        dice_pad_minus_one_btn.setOnClickListener { diceBtnClickRelay.accept(Dice.Minus1()) }
     }
 
     override fun setupListeners() {

@@ -21,6 +21,5 @@ interface DiceRollerView {
         fun onLongClickDeleteBtn(): Flowable<Unit>
 
         fun onClickTemplate(): Flowable<Template>
-
     }
 }

@@ -14,6 +14,8 @@ fun Dice.color(context: Context): Int {
         is Dice.D8 -> context.getColor(R.color.sea_foam)
         is Dice.D10 -> context.getColor(R.color.orange)
         is Dice.D20 -> context.getColor(R.color.pink)
+        is Dice.Plus1 -> context.getColor(R.color.light_blue)
+        is Dice.Minus1 -> context.getColor(R.color.dark_green)
     }
 }
 
@@ -32,5 +34,7 @@ fun Dice.drawable(context: Context): Drawable {
         is Dice.D8 -> context.getDrawable(R.drawable.dice_d8)
         is Dice.D10 -> context.getDrawable(R.drawable.dice_d10)
         is Dice.D20 -> context.getDrawable(R.drawable.dice_d20)
+        is Dice.Minus1 -> context.getDrawable(R.drawable.dice_minus1)
+        is Dice.Plus1 -> context.getDrawable(R.drawable.dice_plus1)
     }
 }
