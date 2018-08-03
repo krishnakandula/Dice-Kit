@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.apps.krishnakandula.common.OnBackPressedListener
 import com.apps.krishnakandula.dicerollerui.view.roll.DiceRollerFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +26,9 @@ class MainActivity : AppCompatActivity() {
                     .add(R.id.fragment_container, diceRollerFragment, DICE_ROLLER_FRAGMENT_TAG)
                     .commit()
         }
+        setSupportActionBar(toolbar)
+        toolbar.background = getDrawable(R.drawable.action_bar_layer_list)
+        toolbar.setTitleTextColor(getColor(R.color.white))
     }
 
     override fun onBackPressed() {

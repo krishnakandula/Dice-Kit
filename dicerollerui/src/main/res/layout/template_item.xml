@@ -4,10 +4,12 @@
     android:id="@+id/template_item_cardview"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
     android:layout_gravity="center_vertical|center_horizontal"
-    app:cardCornerRadius="4dp"
-    app:cardBackgroundColor="@color/royal_purple">
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/primary"
+    app:cardCornerRadius="4dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -16,17 +18,24 @@
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:src="@drawable/ic_add_white_24dp" />
 
         <TextView
             android:id="@+id/template_item_template_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"
             android:text="Template"
+            android:textAlignment="center"
             android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

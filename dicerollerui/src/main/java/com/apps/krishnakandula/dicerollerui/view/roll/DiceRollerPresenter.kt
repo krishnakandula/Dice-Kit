@@ -5,6 +5,7 @@ import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.common.util.Result
 import com.apps.krishnakandula.common.view.BasePresenter
 import com.apps.krishnakandula.dicerollercore.roller.DiceRoller
+import com.apps.krishnakandula.dicerollercore.template.Template
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -22,7 +23,6 @@ class DiceRollerPresenter @Inject constructor(private val userActions: DiceRolle
     override fun bindActions(): CompositeDisposable {
         val disposable = CompositeDisposable()
         disposable.add(userActions.onClickDiceBtn()
-                .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
                 .doOnNext { Log.v(LOG_TAG, "Dice Button pressed") }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(onNext = { die ->
@@ -79,7 +79,31 @@ class DiceRollerPresenter @Inject constructor(private val userActions: DiceRolle
                     viewModel.diceInEquation.accept(roll)
                 }))
 
+        disposable.add(userActions.onClickTemplate()
+                .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
+                .doOnNext { Log.v(LOG_TAG, "Template with name ${it.name} clicked") }
+                .filter { it.rolls.isNotEmpty() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = this::onTemplateClicked))
+
+        disposable.add(userActions.onLongClickDeleteBtn()
+                .debounce(BasePresenter.DEFAULT_ACTIONS_TIMEOUT, BasePresenter.DEFAULT_TIME_UNIT)
+                .doOnNext { Log.v(LOG_TAG, "Delete Btn long clicked") }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = this::onDeleteLongClicked))
+
         return disposable
     }
 
+    private fun onTemplateClicked(template: Template) {
+        if (template.rolls.isNotEmpty()) {
+            val diceInEquation = viewModel.diceInEquation.value.toMutableList()
+            diceInEquation.addAll(template.rolls.map { it.toList() })
+            viewModel.diceInEquation.accept(diceInEquation)
+        }
+    }
+
+    private fun onDeleteLongClicked(unit: Unit) {
+        viewModel.diceInEquation.accept(emptyList())
+    }
 }

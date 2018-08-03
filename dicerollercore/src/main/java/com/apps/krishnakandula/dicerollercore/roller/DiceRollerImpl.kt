@@ -32,6 +32,8 @@ class DiceRollerImpl @Inject constructor() : DiceRoller {
             is Dice.D8 -> Pair(die, roll(1, 8 + 1))
             is Dice.D10 -> Pair(die, roll(1, 10 + 1))
             is Dice.D20 -> Pair(die, roll(1, 20 + 1))
+            is Dice.Plus1 -> Pair(die, 1)
+            is Dice.Minus1 -> Pair(die, -1)
         }
     }
 

@@ -10,21 +10,34 @@ import com.apps.krishnakandula.common.Scopes
 import com.apps.krishnakandula.dicerollercore.template.Template
 import com.apps.krishnakandula.dicerollerui.R
 import com.jakewharton.rxrelay2.BehaviorRelay
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.template_item.view.*
 import javax.inject.Inject
 
 @Scopes.Fragment
-class TemplateAdapter @Inject constructor(private val context: Context)
+class TemplateAdapter @Inject constructor(private val context: Context,
+                                          private val templateInteractionsListener: TemplateInteractionsListener)
     : RecyclerView.Adapter<TemplateAdapter.TemplateViewHolder>() {
 
     private val templates = emptyList<Template>().toMutableList()
 
-    fun setData(data: List<Template>) {
-        val diffResult = DiffUtil.calculateDiff(TemplateDiffCallback(templates, data))
-        diffResult.dispatchUpdatesTo(this)
-        templates.clear()
-        templates.addAll(data)
+    fun setData(data: List<Template>,
+                scrollCallback: (lastIndex: Int) -> Unit) {
+        updateDataObservable(data)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = { diffResult ->
+                    diffResult.dispatchUpdatesTo(this)
+                    templates.clear()
+                    templates.addAll(data)
+                    scrollCallback(templates.lastIndex)
+                })
     }
+
+    private fun updateDataObservable(data: List<Template>) = Observable.just(DiffUtil.calculateDiff(TemplateDiffCallback(templates, data)))
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TemplateViewHolder {
         val itemView = LayoutInflater.from(context).inflate(R.layout.template_item, parent, false)
@@ -41,7 +54,19 @@ class TemplateAdapter @Inject constructor(private val context: Context)
 
         fun bind(template: Template) {
             itemView.template_item_template_name.text = template.name
+            itemView.setOnClickListener { templateInteractionsListener.onClickTemplate(template) }
+            itemView.setOnLongClickListener {
+                templateInteractionsListener.onLongClickTemplate(template)
+                true
+            }
         }
+    }
+
+    interface TemplateInteractionsListener {
+
+        fun onClickTemplate(template: Template)
+
+        fun onLongClickTemplate(template: Template)
     }
 
     internal class TemplateDiffCallback(private val oldTemplates: List<Template>,
